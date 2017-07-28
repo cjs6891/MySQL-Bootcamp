@@ -1,0 +1,121 @@
+MySQL Bootcamp
+
+cloud9
+https://c9.io/
+
+$ mysql-ctl start 
+Installing MySQL
+ * Stopping MySQL database server mysqld
+   ...done.
+ * Starting MySQL database server mysqld
+   ...done.
+ * Checking for tables which need an upgrade, are corrupt or were 
+not closed cleanly.
+
+MySQL 5.5 database added.  Please make note of these credentials:
+
+       Root User: cjs6891
+   Database Name: c9
+
+ * Starting MySQL database server mysqld
+   ...done.
+
+Start - mysql-ctl start
+Stop  - mysql-ctl stop
+Status - mysql-ctl status
+CLI - mysql-ctl cli
+
+Quit -and/or- Exit MySQL
+exit;
+quit;
+\q;
+ctrl-c
+
+mysql> help; - List MySQL Commands
+
+mysql> help contents;
+You asked for help about help category: "Contents"
+For more information, type 'help <item>', where <item> is one of the following
+categories:
+   Account Management
+   Administration
+   Compound Statements
+   Data Definition
+   Data Manipulation
+   Data Types
+   Functions
+   Functions and Modifiers for Use with GROUP BY
+   Geographic Features
+   Help Metadata
+   Language Structure
+   Plugins
+   Procedures
+   Storage Engines
+   Table Maintenance
+   Transactions
+   User-Defined Functions
+   Utility
+
+mysql> show databases; - shows databases, current MySQL Install
+
+mysql> select @@hostname; - get username & hostname
+
+mysql> CREATE DATABASE <NAME>; create a new database
+
+mysql> DROP DATABASE <NAME>; - delete database
+* Once you drop a database, it's gone!
+
+mysql> USE <DATABASE>; - use a specific database
+
+mysql> SELECT DATABASE(); - show what database you're "using"
+
+The SQL CREATE TABLE Statement:
+*Table Names Should Be Pluralized...
+
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    column3 datatype,
+   .....
+);
+
+CREATE TABLE cats
+  (
+    name VARCHAR(100),
+    age INT
+  );
+
+mysql> SHOW TABLES; - show tables in database
+
+mysql> SHOW COLUMNS FROM <TABLENAME>; - show columns in table
+
+mysql> DESC <TABLENAME>; - describe a table
+
+mysql> DROP TABLE <TABLENAME>; - delete a table
+* Once you drop a table, it's gone!
+
+The SQL INSERT INTO Statement
+The INSERT INTO statement is used to insert new records in a table.
+
+It is possible to write the INSERT INTO statement in two ways.
+The first way specifies both the column names and the values to be inserted:
+
+mysql> INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+
+If you are adding values for all the columns of the table, you do not need to specify the column names in the SQL query. However, make sure the order of the values is in the same order as the columns in the table. The INSERT INTO syntax would be as follows:
+
+mysql> INSERT INTO table_name
+VALUES (value1, value2, value3, ...);
+
+mysql> INSERT INTO people
+    -> VALUES ('Linda', 'Belcher', 45), ('Phillip', 'Frond', 38), ('Calvin', 'Fischoeder', 70);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+
+The SQL SELECT Statement
+The SELECT statement is used to select data from a database.
+
+mysql> SELECT * FROM table_name;
+
