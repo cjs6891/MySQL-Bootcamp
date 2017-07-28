@@ -119,3 +119,213 @@ The SELECT statement is used to select data from a database.
 
 mysql> SELECT * FROM table_name;
 
+mysql> SHOW WARNINGS; - show warning message(s)
+
+
+What is a NULL Value?
+A field with a NULL value is a field with no value (EMPTY).
+
+* If a field in a table is optional, it is possible to insert a new record or update a record without adding a value to this field. Then, the field will be saved with a NULL value.
+
+*** Note: It is very important to understand that a NULL value is different from a zero value or a field that contains spaces. A field with a NULL value is one that has been left blank during record creation...
+
+SELECT column_names
+FROM table_name
+WHERE column_name IS NULL;
+
+
+SQL DEFAULT Constraint
+The DEFAULT constraint is used to provide a default value for a column.
+
+The default value will be added to all new records IF no other value is specified.
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    City varchar(255) DEFAULT 'Sandnes'
+);
+
+SQL PRIMARY KEY Constraint
+The PRIMARY KEY constraint uniquely identifies each record in a database table.
+
+Primary keys must contain UNIQUE values, and cannot contain NULL values.
+
+A table can have only one primary key, which may consist of single or multiple fields.
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (ID)
+);
+
+Auto-increment allows a unique number to be generated automatically when a new record is inserted into a table.
+
+CREATE TABLE Persons (
+    ID int NOT NULL AUTO_INCREMENT,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (ID)
+);
+
+Table Constraints Exercise Solution
+Defining The employees table:
+
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    middle_name VARCHAR(255),
+    age INT NOT NULL,
+    current_status VARCHAR(255) NOT NULL DEFAULT 'employed',
+    PRIMARY KEY(id)
+);
+
+Another way of defining a primary key:
+
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    middle_name VARCHAR(255),
+    age INT NOT NULL,
+    current_status VARCHAR(255) NOT NULL DEFAULT 'employed'
+);
+
+A test INSERT:
+INSERT INTO employees(last_name, first_name, age)
+    VALUES("Takacs", "Robert", 41), ("Dingler","Sheila",31);
+
+
+CRUD
+
+Create - INSERT INTO
+Read - SELECT
+Update
+Delete/Destroy
+
+Recreate a new cats table:
+
+DROP TABLE cats;
+
+CREATE TABLE cats 
+  ( 
+     cat_id INT NOT NULL AUTO_INCREMENT, 
+     name   VARCHAR(100), 
+     breed  VARCHAR(100), 
+     age    INT, 
+     PRIMARY KEY (cat_id) 
+  );
+
+INSERT INTO cats(name, breed, age) 
+VALUES ('Ringo', 'Tabby', 4),
+       ('Cindy', 'Maine Coon', 10),
+       ('Dumbledore', 'Maine Coon', 11),
+       ('Egg', 'Persian', 4),
+       ('Misty', 'Tabby', 13),
+       ('George Michael', 'Ragdoll', 9),
+       ('Jackson', 'Sphynx', 7);
+
+
+mysql> SELECT * FROM cats;
+              ^
+              |----- "Give Me All Columns"
+
+mysql> SELECT name, age FROM cats;
++----------------+------+
+| name           | age  |
++----------------+------+
+| Ringo          |    4 |
+| Cindy          |   10 |
+| Dumbledore     |   11 |
+| Egg            |    4 |
+| Misty          |   11 |
+| George Michael |    9 |
+| Jackson        |    7 |
++----------------+------+
+
+The SQL WHERE Clause
+The WHERE clause is used to filter records.
+
+he WHERE clause is used to extract only those records that fulfill a specified condition.
+
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+mysql> SELECT * FROM cats WHERE age=4;
+
+mysql> SELECT * FROM cats WHERE name='Egg'; - Case Insensitive
+
+mysql> SELECT cat_id FROM cats; 
+mysql> SELECT name, breed FROM cats; 
+mysql> SELECT name, age FROM cats WHERE breed='Tabby'; 
+mysql> SELECT cat_id, age FROM cats WHERE cat_id=age; 
+mysql> SELECT * FROM cats WHERE cat_id=age;
+
+
+SQL Aliases
+SQL aliases are used to give a table, or a column in a table, a temporary name.
+* Aliases are often used to make column names more readable. An alias only exists for the duration of the query.
+
+Alias Column Syntax
+SELECT column_name AS alias_name
+FROM table_name;
+
+Alias Table Syntax
+SELECT column_name(s)
+FROM table_name AS alias_name;
+
+mysql> SELECT cat_id AS id, name FROM cats;
+mysql> SELECT name AS 'Cat Name', breed AS 'Breed' FROM cats;
+
+
+The SQL UPDATE Statement
+The UPDATE statement is used to modify the existing records in a table.
+
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+
+mysql> UPDATE cats SET breed='Shorthair' WHERE breed='Tabby';
+
+mysql> UPDATE cats SET age=14 WHERE name='Misty';
+
+* A Good Rule of Thumb
+SELECT before you UPDATE; be sure to target the data before updating the data, there is no undo button...
+
+mysql> UPDATE cats SET name='Jack' WHERE name='jackson';
+mysql> UPDATE cats SET breed='British Shorthair' WHERE name='ringo';
+mysql> UPDATE cats SET age=12 WHERE breed='persian';
+
+mysql> SELECT * FROM cats WHERE name='Jackson';
+mysql> UPDATE cats SET name='Jack' WHERE name='Jackson';
+mysql> SELECT * FROM cats WHERE name='Jackson';
+mysql> SELECT * FROM cats WHERE name='Jack';
+mysql> SELECT * FROM cats WHERE name='Ringo';
+mysql> UPDATE cats SET breed='British Shorthair' WHERE name='Ringo';
+mysql> SELECT * FROM cats WHERE name='Ringo';
+mysql> SELECT * FROM cats;
+mysql> SELECT * FROM cats WHERE breed='Maine Coon';
+mysql> UPDATE cats SET age=12 WHERE breed='Maine Coon';
+mysql> SELECT * FROM cats WHERE breed='Maine Coon';
+
+
+The SQL DELETE Statement
+The DELETE statement is used to delete existing records in a table.
+
+mysql> DELETE FROM table_name
+mysql> WHERE condition;
+
+DELETE FROM <TABLENAME>; - deletes all records, empty entire table!
+
+mysql> DELETE FROM cats WHERE name='Egg';
+mysql> SELECT * FROM cats;
+mysql> SELECT * FROM cats WHERE name='egg';
+mysql> DELETE FROM cats WHERE name='egg';
+mysql> SELECT * FROM cats;
+mysql> DELETE FROM cats;
