@@ -321,7 +321,13 @@ The DELETE statement is used to delete existing records in a table.
 mysql> DELETE FROM table_name
 mysql> WHERE condition;
 
+
+Delete All Records
+It is possible to delete all rows in a table without deleting the table. This means that the table structure, attributes, and indexes will be intact:
+
 DELETE FROM <TABLENAME>; - deletes all records, empty entire table!
+-or-
+DELETE * FROM <TABLENAME>;
 
 mysql> DELETE FROM cats WHERE name='Egg';
 mysql> SELECT * FROM cats;
@@ -329,3 +335,155 @@ mysql> SELECT * FROM cats WHERE name='egg';
 mysql> DELETE FROM cats WHERE name='egg';
 mysql> SELECT * FROM cats;
 mysql> DELETE FROM cats;
+
+CRUD Exercise...
+
+CREATE TABLE closet_inventory(
+    shirt_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    article VARCHAR(255) NOT NULL,
+    color VARCHAR(255) NOT NULL,
+    shirt_size VARCHAR(255) NOT NULL,
+    last_worn INT NOT NULL);
+
+INSERT INTO closet_inventory(article, color, shirt_size, last_worn)
+    VALUES
+    ('t-shirt', 'white', 'S', 10),
+    ('t-shirt', 'green', 'S', 200),
+    ('polo shirt', 'black', 'M', 10),
+    ('tank top', 'blue', 'S', 50),
+    ('t-shirt', 'pink', 'S', 0),
+    ('polo shirt', 'red', 'M', 5),
+    ('tank top', 'white', 'S', 200),
+    ('tank top', 'blue', 'M', 15);
+
+INSERT INTO closet_inventory(article, color, shirt_size, last_worn)
+    VALUES
+    ('polo shirt', 'purple', 'M', 50);
+
+SELECT article,color FROM closet_inventory;
+
+SELECT * FROM closet_inventory WHERE shirt_size='M';
+
+SELECT article,color,shirt_size,last_worn FROM closet_inventory WHERE shirt_size='M';
+
+UPDATE closet_inventory SET color='off white', shirt_size='XS' WHERE color='white';
+
+UPDATE closet_inventory SET last_worn=0 WHERE last_worn=15;
+
+SELECT * FROM closet_inventory WHERE last_worn=15;
+
+SELECT * FROM closet_inventory WHERE article='polo shirt';
+
+UPDATE closet_inventory SET shirt_size='L' WHERE article='polo shirt';
+
+DROP TABLE closet_inventory;
+
+DELETE FROM closet_inventory;
+
+DELETE FROM closet_inventory WHERE article='tank top';
+
+DELETE FROM closet_inventory WHERE last_worn=200;
+
+
+Running SQL Files, using "source"
+*Refer to file full path to use
+
+mysql> source create_tbl.sql
+
+CREATE TABLE books 
+    (
+        book_id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(100),
+        author_fname VARCHAR(100),
+        author_lname VARCHAR(100),
+        released_year INT,
+        stock_quantity INT,
+        pages INT,
+        PRIMARY KEY(book_id)
+    );
+ 
+INSERT INTO books (title, author_fname, author_lname, released_year, stock_quantity, pages)
+VALUES
+('The Namesake', 'Jhumpa', 'Lahiri', 2003, 32, 291),
+('Norse Mythology', 'Neil', 'Gaiman',2016, 43, 304),
+('American Gods', 'Neil', 'Gaiman', 2001, 12, 465),
+('Interpreter of Maladies', 'Jhumpa', 'Lahiri', 1996, 97, 198),
+('A Hologram for the King: A Novel', 'Dave', 'Eggers', 2012, 154, 352),
+('The Circle', 'Dave', 'Eggers', 2013, 26, 504),
+('The Amazing Adventures of Kavalier & Clay', 'Michael', 'Chabon', 2000, 68, 634),
+('Just Kids', 'Patti', 'Smith', 2010, 55, 304),
+('A Heartbreaking Work of Staggering Genius', 'Dave', 'Eggers', 2001, 104, 437),
+('Coraline', 'Neil', 'Gaiman', 2003, 100, 208),
+('What We Talk About When We Talk About Love: Stories', 'Raymond', 'Carver', 1981, 23, 176),
+("Where I'm Calling From: Selected Stories", 'Raymond', 'Carver', 1989, 12, 526),
+('White Noise', 'Don', 'DeLillo', 1985, 49, 320),
+('Cannery Row', 'John', 'Steinbeck', 1945, 95, 181),
+('Oblivion: Stories', 'David', 'Foster Wallace', 2004, 172, 329),
+('Consider the Lobster', 'David', 'Foster Wallace', 2005, 92, 343);
+ 
+ 
+SELECT database();
+ 
+CREATE DATABASE book_shop;
+ 
+use book_shop;
+ 
+show tables;
+ 
+source book_data.sql
+ 
+DESC books;
+ 
+SELECT * FROM books;
+
+
+MySQL String Functions
+https://dev.mysql.com/doc/refman/5.7/en/string-functions.html
+
+CONCAT()  Return concatenated string
+
+mysql> SELECT CONCAT(author_lname,', ',author_fname) FROM books;
+
+CONCAT W/Alias
+mysql> SELECT CONCAT(author_lname,', ',author_fname) AS 'Full Name' FROM books;
+
+mysql> SELECT author_fname AS 'First Name', author_lname AS 'Last Name', CONCAT(author_fname,' ',author_lname) AS 'Full Name' FROM books;
+
++------------+----------------+----------------------+
+| First Name | Last Name      | Full Name            |
++------------+----------------+----------------------+
+| Jhumpa     | Lahiri         | Jhumpa Lahiri        |
+| Neil       | Gaiman         | Neil Gaiman          |
+| Neil       | Gaiman         | Neil Gaiman          |
+| Jhumpa     | Lahiri         | Jhumpa Lahiri        |
+| Dave       | Eggers         | Dave Eggers          |
+| Dave       | Eggers         | Dave Eggers          |
+| Michael    | Chabon         | Michael Chabon       |
+| Patti      | Smith          | Patti Smith          |
+| Dave       | Eggers         | Dave Eggers          |
+| Neil       | Gaiman         | Neil Gaiman          |
+| Raymond    | Carver         | Raymond Carver       |
+| Raymond    | Carver         | Raymond Carver       |
+| Don        | DeLillo        | Don DeLillo          |
+| John       | Steinbeck      | John Steinbeck       |
+| David      | Foster Wallace | David Foster Wallace |
+| David      | Foster Wallace | David Foster Wallace |
++------------+----------------+----------------------+
+
+CONCAT_WS() Return concatenate with separator
+
+mysql> SELECT CONCAT_WS(' - ', author_lname, author_fname) FROM books;                          
++----------------------------------------------+
+| CONCAT_WS(' - ', author_lname, author_fname) |
++----------------------------------------------+
+| Lahiri - Jhumpa                              |
+| Gaiman - Neil                                |
+
+
+mysql> SELECT CONCAT_WS(', ', author_lname, author_fname) AS 'Last Name, First Name' FROM books;                           
++-----------------------+
+| Last Name, First Name |
++-----------------------+
+| Lahiri, Jhumpa        |
+| Gaiman, Neil          |
+
