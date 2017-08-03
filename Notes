@@ -487,3 +487,1180 @@ mysql> SELECT CONCAT_WS(', ', author_lname, author_fname) AS 'Last Name, First N
 | Lahiri, Jhumpa        |
 | Gaiman, Neil          |
 
+
+
+Substring
+Select Portions of a string, ex. 1st character etc.
+
+* Index starts at 1 not 0 like an array :(
+
+* Using 1 index number ex. SELECT SUBSTRING('Hello World', 7); prints from that index until the end
+
+* Using a negative number -3 prints backwards from the end of the string
+
+mysql> SELECT SUBSTRING('Hello World', 1,4);
++-------------------------------+
+| SUBSTRING('Hello World', 1,4) |
++-------------------------------+
+| Hell                          |
++-------------------------------+
+
+mysql> SELECT SUBSTRING('Hello World', 7);
++-----------------------------+
+| SUBSTRING('Hello World', 7) |
++-----------------------------+
+| World                       |
++-----------------------------+
+
+mysql> SELECT SUBSTRING('Hello World', -3);
++------------------------------+
+| SUBSTRING('Hello World', -3) |
++------------------------------+
+| rld                          |
++------------------------------+
+
+mysql> SELECT SUBSTRING(title, 1,10) AS 'Short Title' FROM books;                                                                                         
++-------------+
+| Short Title |
++-------------+
+| The Namesa  |
+| Norse Myth  |
+| American G  |
+| Interprete  |
+| A Hologram  |
+| The Circle  |
+| The Amazin  |
+| Just Kids   |
+| A Heartbre  |
+| Coraline    |
+| What We Ta  |
+| Where I'm   |
+| White Nois  |
+| Cannery Ro  |
+| Oblivion:   |
+| Consider t  |
++-------------+
+
+Multiple Substrings...
+
+mysql> SELECT CONCAT(SUBSTRING(title, 1, 10),'...') FROM books;
++---------------------------------------+
+| CONCAT(SUBSTRING(title, 1, 10),'...') |
++---------------------------------------+
+| The Namesa...                         |
+| Norse Myth...                         |
+| American G...                         |
+| Interprete...                         |
+| A Hologram...                         |
+| The Circle...                         |
+| The Amazin...                         |
+| Just Kids...                          |
+| A Heartbre...                         |
+| Coraline...                           |
+| What We Ta...                         |
+| Where I'm ...                         |
+| White Nois...                         |
+| Cannery Ro...                         |
+| Oblivion: ...                         |
+| Consider t...                         |
++---------------------------------------+
+
+
+Replace
+replace parts of a string
+
+mysql> SELECT REPLACE('Hello World', 'Hell', '%$#@');
++----------------------------------------+
+| REPLACE('Hello World', 'Hell', '%$#@') |
++----------------------------------------+
+| %$#@o World                            |
++----------------------------------------+
+
+mysql> SELECT REPLACE('Hello World', 'l', '7');
++----------------------------------+
+| REPLACE('Hello World', 'l', '7') |
++----------------------------------+
+| He77o Wor7d                      |
++----------------------------------+
+
+mysql> SELECT REPLACE(title, 'e', '3') FROM books;
++-----------------------------------------------------+
+| REPLACE(title, 'e', '3')                            |
++-----------------------------------------------------+
+| Th3 Nam3sak3                                        |
+| Nors3 Mythology                                     |
+| Am3rican Gods                                       |
+| Int3rpr3t3r of Maladi3s                             |
+| A Hologram for th3 King: A Nov3l                    |
+| Th3 Circl3                                          |
+| Th3 Amazing Adv3ntur3s of Kavali3r & Clay           |
+| Just Kids                                           |
+| A H3artbr3aking Work of Stagg3ring G3nius           |
+| Coralin3                                            |
+| What W3 Talk About Wh3n W3 Talk About Lov3: Stori3s |
+| Wh3r3 I'm Calling From: S3l3ct3d Stori3s            |
+| Whit3 Nois3                                         |
+| Cann3ry Row                                         |
+| Oblivion: Stori3s                                   |
+| Consid3r th3 Lobst3r                                |
++-----------------------------------------------------+
+
+mysql> SELECT SUBSTRING(REPLACE(title, 'e', '3'),1,10) AS 'Odd String...' FROM books;                                      
++---------------+
+| Odd String... |
++---------------+
+| Th3 Nam3sa    |
+| Nors3 Myth    |
+| Am3rican G    |
+| Int3rpr3t3    |
+| A Hologram    |
+| Th3 Circl3    |
+| Th3 Amazin    |
+| Just Kids     |
+| A H3artbr3    |
+| Coralin3      |
+| What W3 Ta    |
+| Wh3r3 I'm     |
+| Whit3 Nois    |
+| Cann3ry Ro    |
+| Oblivion:     |
+| Consid3r t    |
++---------------+
+
+Reverse
+Reverse Strings...
+
+mysql> SELECT REVERSE('Hello World');
++------------------------+
+| REVERSE('Hello World') |
++------------------------+
+| dlroW olleH            |
++------------------------+
+
+mysql> SELECT REVERSE(author_fname) FROM books;
++-----------------------+
+| REVERSE(author_fname) |
++-----------------------+
+| apmuhJ                |
+| lieN                  |
+| lieN                  |
+| apmuhJ                |
+| evaD                  |
+| evaD                  |
+| leahciM               |
+| ittaP                 |
+| evaD                  |
+| lieN                  |
+| dnomyaR               |
+| dnomyaR               |
+| noD                   |
+| nhoJ                  |
+| divaD                 |
+| divaD                 |
++-----------------------+
+
+mysql> SELECT CONCAT(author_fname, REVERSE(author_fname)) FROM books;                                                
++---------------------------------------------+
+| CONCAT(author_fname, REVERSE(author_fname)) |
++---------------------------------------------+
+| JhumpaapmuhJ                                |
+| NeillieN                                    |
+| NeillieN                                    |
+| JhumpaapmuhJ                                |
+| DaveevaD                                    |
+| DaveevaD                                    |
+| MichaelleahciM                              |
+| PattiittaP                                  |
+| DaveevaD                                    |
+| NeillieN                                    |
+| RaymonddnomyaR                              |
+| RaymonddnomyaR                              |
+| DonnoD                                      |
+| JohnnhoJ                                    |
+| DaviddivaD                                  |
+| DaviddivaD                                  |
++---------------------------------------------+
+
+CHAR_LENGTH
+Counts Characters in String
+
+mysql> SELECT CHAR_LENGTH('Hello World');
++----------------------------+
+| CHAR_LENGTH('Hello World') |
++----------------------------+
+|                         11 |
++----------------------------+
+
+mysql> SELECT author_lname, CHAR_LENGTH(author_lname) FROM books;
++----------------+---------------------------+
+| author_lname   | CHAR_LENGTH(author_lname) |
++----------------+---------------------------+
+| Lahiri         |                         6 |
+| Gaiman         |                         6 |
+| Gaiman         |                         6 |
+| Lahiri         |                         6 |
+| Eggers         |                         6 |
+| Eggers         |                         6 |
+| Chabon         |                         6 |
+| Smith          |                         5 |
+| Eggers         |                         6 |
+| Gaiman         |                         6 |
+| Carver         |                         6 |
+| Carver         |                         6 |
+| DeLillo        |                         7 |
+| Steinbeck      |                         9 |
+| Foster Wallace |                        14 |
+| Foster Wallace |                        14 |
++----------------+---------------------------+
+
+mysql> SELECT CONCAT(author_lname, ' is ', CHAR_LENGTH(author_lname), ' characters long') FROM books;                      
++-----------------------------------------------------------------------------+
+| CONCAT(author_lname, ' is ', CHAR_LENGTH(author_lname), ' characters long') |
++-----------------------------------------------------------------------------+
+| Lahiri is 6 characters long                                                 |
+| Gaiman is 6 characters long                                                 |
+| Gaiman is 6 characters long                                                 |
+| Lahiri is 6 characters long                                                 |
+| Eggers is 6 characters long                                                 |
+| Eggers is 6 characters long                                                 |
+| Chabon is 6 characters long                                                 |
+| Smith is 5 characters long                                                  |
+| Eggers is 6 characters long                                                 |
+| Gaiman is 6 characters long                                                 |
+| Carver is 6 characters long                                                 |
+| Carver is 6 characters long                                                 |
+| DeLillo is 7 characters long                                                |
+| Steinbeck is 9 characters long                                              |
+| Foster Wallace is 14 characters long                                        |
+| Foster Wallace is 14 characters long                                        |
++-----------------------------------------------------------------------------+
+
+http://sql-format.com/
+
+
+UPPER() and LOWER()
+Change A String's Case
+
+mysql> SELECT UPPER ('Hello World');
++-----------------------+
+| UPPER ('Hello World') |
++-----------------------+
+| HELLO WORLD           |
++-----------------------+
+
+mysql> SELECT LOWER ('Hello World');                                                                                       
++-----------------------+
+| LOWER ('Hello World') |
++-----------------------+
+| hello world           |
++-----------------------+
+
+mysql> SELECT CONCAT('One of My Favorite Books is: ', UPPER(title)) FROM books;                                            
++----------------------------------------------------------------------------------+
+| CONCAT('One of My Favorite Books is: ', UPPER(title))                            |
++----------------------------------------------------------------------------------+
+| One of My Favorite Books is: THE NAMESAKE                                        |
+| One of My Favorite Books is: NORSE MYTHOLOGY                                     |
+| One of My Favorite Books is: AMERICAN GODS                                       |
+| One of My Favorite Books is: INTERPRETER OF MALADIES                             |
+| One of My Favorite Books is: A HOLOGRAM FOR THE KING: A NOVEL                    |
+| One of My Favorite Books is: THE CIRCLE                                          |
+| One of My Favorite Books is: THE AMAZING ADVENTURES OF KAVALIER & CLAY           |
+| One of My Favorite Books is: JUST KIDS                                           |
+| One of My Favorite Books is: A HEARTBREAKING WORK OF STAGGERING GENIUS           |
+| One of My Favorite Books is: CORALINE                                            |
+| One of My Favorite Books is: WHAT WE TALK ABOUT WHEN WE TALK ABOUT LOVE: STORIES |
+| One of My Favorite Books is: WHERE I'M CALLING FROM: SELECTED STORIES            |
+| One of My Favorite Books is: WHITE NOISE                                         |
+| One of My Favorite Books is: CANNERY ROW                                         |
+| One of My Favorite Books is: OBLIVION: STORIES                                   |
+| One of My Favorite Books is: CONSIDER THE LOBSTER                                |
++----------------------------------------------------------------------------------+
+
+
+String Function Challenges!
+
+mysql> SELECT UPPER(REVERSE('hello world...'));
++----------------------------------+
+| UPPER(REVERSE('hello world...')) |
++----------------------------------+
+| ...DLROW OLLEH                   |
++----------------------------------+
+
+mysql> SELECT REPLACE(title,' ','->') AS 'Title W/->' FROM books;                                                          
++--------------------------------------------------------------+
+| Title W/->                                                   |
++--------------------------------------------------------------+
+| The->Namesake                                                |
+| Norse->Mythology                                             |
+| American->Gods                                               |
+| Interpreter->of->Maladies                                    |
+| A->Hologram->for->the->King:->A->Novel                       |
+| The->Circle                                                  |
+| The->Amazing->Adventures->of->Kavalier->&->Clay              |
+| Just->Kids                                                   |
+| A->Heartbreaking->Work->of->Staggering->Genius               |
+| Coraline                                                     |
+| What->We->Talk->About->When->We->Talk->About->Love:->Stories |
+| Where->I'm->Calling->From:->Selected->Stories                |
+| White->Noise                                                 |
+| Cannery->Row                                                 |
+| Oblivion:->Stories                                           |
+| Consider->the->Lobster                                       |
++--------------------------------------------------------------+
+
+mysql> SELECT author_lname AS 'Forward',REVERSE(author_lname) AS 'Reverse' FROM books ORDER BY author_lname ASC;
++----------------+----------------+
+| Forward        | Reverse        |
++----------------+----------------+
+| Carver         | revraC         |
+| Carver         | revraC         |
+| Chabon         | nobahC         |
+| DeLillo        | olliLeD        |
+| Eggers         | sreggE         |
+| Eggers         | sreggE         |
+| Eggers         | sreggE         |
+| Foster Wallace | ecallaW retsoF |
+| Foster Wallace | ecallaW retsoF |
+| Gaiman         | namiaG         |
+| Gaiman         | namiaG         |
+| Gaiman         | namiaG         |
+| Lahiri         | irihaL         |
+| Lahiri         | irihaL         |
+| Smith          | htimS          |
+| Steinbeck      | kcebnietS      |
++----------------+----------------+
+
+mysql> SELECT CONCAT(UPPER(author_fname),' ',UPPER(author_lname)) AS 'Author, Full Name UPPER' FROM books ORDER BY author_lname ASC;
++-------------------------+
+| Author, Full Name UPPER |
++-------------------------+
+| RAYMOND CARVER          |
+| RAYMOND CARVER          |
+| MICHAEL CHABON          |
+| DON DELILLO             |
+| DAVE EGGERS             |
+| DAVE EGGERS             |
+| DAVE EGGERS             |
+| DAVID FOSTER WALLACE    |
+| DAVID FOSTER WALLACE    |
+| NEIL GAIMAN             |
+| NEIL GAIMAN             |
+| NEIL GAIMAN             |
+| JHUMPA LAHIRI           |
+| JHUMPA LAHIRI           |
+| PATTI SMITH             |
+| JOHN STEINBECK          |
++-------------------------+
+
+--OR--
+
+mysql> SELECT UPPER(CONCAT(author_fname,' ',author_lname)) AS 'Author, Full Name UPPER' FROM books ORDER BY author_lname ASC;                                                                           
++-------------------------+
+| Author, Full Name UPPER |
++-------------------------+
+| RAYMOND CARVER          |
+| RAYMOND CARVER          |
+| MICHAEL CHABON          |
+| DON DELILLO             |
+| DAVE EGGERS             |
+| DAVE EGGERS             |
+| DAVE EGGERS             |
+| DAVID FOSTER WALLACE    |
+| DAVID FOSTER WALLACE    |
+| NEIL GAIMAN             |
+| NEIL GAIMAN             |
+| NEIL GAIMAN             |
+| JHUMPA LAHIRI           |
+| JHUMPA LAHIRI           |
+| PATTI SMITH             |
+| JOHN STEINBECK          |
++-------------------------+
+
+mysql> SELECT CONCAT(title,' was released in ',released_year) AS 'Blurb...' FROM books;                                    
++--------------------------------------------------------------------------+
+| Blurb...                                                                 |
++--------------------------------------------------------------------------+
+| The Namesake was released in 2003                                        |
+| Norse Mythology was released in 2016                                     |
+| American Gods was released in 2001                                       |
+| Interpreter of Maladies was released in 1996                             |
+| A Hologram for the King: A Novel was released in 2012                    |
+| The Circle was released in 2013                                          |
+| The Amazing Adventures of Kavalier & Clay was released in 2000           |
+| Just Kids was released in 2010                                           |
+| A Heartbreaking Work of Staggering Genius was released in 2001           |
+| Coraline was released in 2003                                            |
+| What We Talk About When We Talk About Love: Stories was released in 1981 |
+| Where I'm Calling From: Selected Stories was released in 1989            |
+| White Noise was released in 1985                                         |
+| Cannery Row was released in 1945                                         |
+| Oblivion: Stories was released in 2004                                   |
+| Consider the Lobster was released in 2005                                |
++--------------------------------------------------------------------------+
+
+mysql> SELECT title AS 'Title',CHAR_LENGTH(title) AS 'Character Count' FROM books;                                         
++-----------------------------------------------------+-----------------+
+| Title                                               | Character Count |
++-----------------------------------------------------+-----------------+
+| The Namesake                                        |              12 |
+| Norse Mythology                                     |              15 |
+| American Gods                                       |              13 |
+| Interpreter of Maladies                             |              23 |
+| A Hologram for the King: A Novel                    |              32 |
+| The Circle                                          |              10 |
+| The Amazing Adventures of Kavalier & Clay           |              41 |
+| Just Kids                                           |               9 |
+| A Heartbreaking Work of Staggering Genius           |              41 |
+| Coraline                                            |               8 |
+| What We Talk About When We Talk About Love: Stories |              51 |
+| Where I'm Calling From: Selected Stories            |              40 |
+| White Noise                                         |              11 |
+| Cannery Row                                         |              11 |
+| Oblivion: Stories                                   |              17 |
+| Consider the Lobster                                |              20 |
++-----------------------------------------------------+-----------------+
+
+mysql> SELECT CONCAT(SUBSTRING(title,1,10),'...') AS 'Short Title',CONCAT(author_lname,', ',author_fname) AS 'Author',CONCAT(stock_quantity,' in stock') AS Quantity FROM books ORDER BY title ASC;                                                   
++---------------+-----------------------+--------------+
+| Short Title   | Author                | Quantity     |
++---------------+-----------------------+--------------+
+| A Heartbre... | Eggers, Dave          | 104 in stock |
+| A Hologram... | Eggers, Dave          | 154 in stock |
+| American G... | Gaiman, Neil          | 12 in stock  |
+| Cannery Ro... | Steinbeck, John       | 95 in stock  |
+| Consider t... | Foster Wallace, David | 92 in stock  |
+| Coraline...   | Gaiman, Neil          | 100 in stock |
+| Interprete... | Lahiri, Jhumpa        | 97 in stock  |
+| Just Kids...  | Smith, Patti          | 55 in stock  |
+| Norse Myth... | Gaiman, Neil          | 43 in stock  |
+| Oblivion: ... | Foster Wallace, David | 172 in stock |
+| The Amazin... | Chabon, Michael       | 68 in stock  |
+| The Circle... | Eggers, Dave          | 26 in stock  |
+| The Namesa... | Lahiri, Jhumpa        | 32 in stock  |
+| What We Ta... | Carver, Raymond       | 23 in stock  |
+| Where I'm ... | Carver, Raymond       | 12 in stock  |
+| White Nois... | DeLillo, Don          | 49 in stock  |
++---------------+-----------------------+--------------+
+
+
+The SQL SELECT DISTINCT Statement
+The SELECT DISTINCT statement is used to return only distinct (different) values.
+
+SELECT DISTINCT column1, column2, ...
+FROM table_name;
+
+mysql> SELECT DISTINCT author_lname FROM books;
++----------------+
+| author_lname   |
++----------------+
+| Lahiri         |
+| Gaiman         |
+| Eggers         |
+| Chabon         |
+| Smith          |
+| Carver         |
+| DeLillo        |
+| Steinbeck      |
+| Foster Wallace |
+| Harris         |
+| Saunders       |
++----------------+
+
+mysql> SELECT DISTINCT CONCAT(author_fname,' ',author_lname) FROM books;                                                   
++---------------------------------------+
+| CONCAT(author_fname,' ',author_lname) |
++---------------------------------------+
+| Jhumpa Lahiri                         |
+| Neil Gaiman                           |
+| Dave Eggers                           |
+| Michael Chabon                        |
+| Patti Smith                           |
+| Raymond Carver                        |
+| Don DeLillo                           |
+| John Steinbeck                        |
+| David Foster Wallace                  |
+| Dan Harris                            |
+| Freida Harris                         |
+| George Saunders                       |
++---------------------------------------+
+
+--or--
+
+mysql> SELECT DISTINCT author_fname, author_lname FROM books;                                                             
++--------------+----------------+
+| author_fname | author_lname   |
++--------------+----------------+
+| Jhumpa       | Lahiri         |
+| Neil         | Gaiman         |
+| Dave         | Eggers         |
+| Michael      | Chabon         |
+| Patti        | Smith          |
+| Raymond      | Carver         |
+| Don          | DeLillo        |
+| John         | Steinbeck      |
+| David        | Foster Wallace |
+| Dan          | Harris         |
+| Freida       | Harris         |
+| George       | Saunders       |
++--------------+----------------+
+
+
+The SQL ORDER BY Keyword
+The ORDER BY keyword is used to sort the result-set in ascending or descending order.
+*Ascending By Default
+
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1, column2, ... ASC|DESC;
+
+mysql> SELECT title FROM books ORDER BY title;
++-----------------------------------------------------+
+| title                                               |
++-----------------------------------------------------+
+| 10% Happier                                         |
+| A Heartbreaking Work of Staggering Genius           |
+| A Hologram for the King: A Novel                    |
+| American Gods                                       |
+| Cannery Row                                         |
+| Consider the Lobster                                |
+| Coraline                                            |
+| fake_book                                           |
+| Interpreter of Maladies                             |
+| Just Kids                                           |
+| Lincoln In The Bardo                                |
+| Norse Mythology                                     |
+| Oblivion: Stories                                   |
+| The Amazing Adventures of Kavalier & Clay           |
+| The Circle                                          |
+| The Namesake                                        |
+| What We Talk About When We Talk About Love: Stories |
+| Where I'm Calling From: Selected Stories            |
+| White Noise                                         |
++-----------------------------------------------------+
+
+ORDER BY Multiple Columns, i.e. Dan Harris before Freida Harris:
+
+mysql> SELECT author_fname,author_lname FROM books ORDER BY author_lname,author_fname ASC;
++--------------+----------------+
+| author_fname | author_lname   |
++--------------+----------------+
+| Raymond      | Carver         |
+| Raymond      | Carver         |
+| Michael      | Chabon         |
+| Don          | DeLillo        |
+| Dave         | Eggers         |
+| Dave         | Eggers         |
+| Dave         | Eggers         |
+| David        | Foster Wallace |
+| David        | Foster Wallace |
+| Neil         | Gaiman         |
+| Neil         | Gaiman         |
+| Neil         | Gaiman         |
+| Dan          | Harris         |
+| Freida       | Harris         |
+| Jhumpa       | Lahiri         |
+| Jhumpa       | Lahiri         |
+| George       | Saunders       |
+| Patti        | Smith          |
+| John         | Steinbeck      |
++--------------+----------------+
+
+
+SQL Limit
+Limit Number of Results, typically used W/ORDER BY
+
+mysql> SELECT title,released_year,pages FROM books ORDER BY released_year DESC LIMIT 5;
++----------------------------------+---------------+-------+
+| title                            | released_year | pages |
++----------------------------------+---------------+-------+
+| Lincoln In The Bardo             |          2017 |   367 |
+| Norse Mythology                  |          2016 |   304 |
+| 10% Happier                      |          2014 |   256 |
+| The Circle                       |          2013 |   504 |
+| A Hologram for the King: A Novel |          2012 |   352 |
++----------------------------------+---------------+-------+
+
+*** LIMIT Starts at 0
+
+mysql> SELECT title,released_year,pages FROM books ORDER BY released_year DESC LIMIT 4,1;
++----------------------------------+---------------+-------+
+| title                            | released_year | pages |
++----------------------------------+---------------+-------+
+| A Hologram for the King: A Novel |          2012 |   352 |
++----------------------------------+---------------+-------+
+
+
+The SQL LIKE Operator
+The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
+
+There are two wildcards used in conjunction with the LIKE operator:
+% - The percent sign represents zero, one, or multiple characters
+_ - The underscore represents a single character
+
+SELECT column1, column2, ...
+FROM table_name
+WHERE columnN LIKE pattern;
+
+First Name Contains 'da'
+mysql> SELECT title,author_fname FROM books WHERE author_fname LIKE '%da%';                                                
++-------------------------------------------+--------------+
+| title                                     | author_fname |
++-------------------------------------------+--------------+
+| A Hologram for the King: A Novel          | Dave         |
+| The Circle                                | Dave         |
+| A Heartbreaking Work of Staggering Genius | Dave         |
+| Oblivion: Stories                         | David        |
+| Consider the Lobster                      | David        |
+| 10% Happier                               | Dan          |
+| fake_book                                 | Freida       |
++-------------------------------------------+--------------+
+
+First Name Starts With 'da'
+mysql> SELECT title,author_fname FROM books WHERE author_fname LIKE 'da%';
++-------------------------------------------+--------------+
+| title                                     | author_fname |
++-------------------------------------------+--------------+
+| A Hologram for the King: A Novel          | Dave         |
+| The Circle                                | Dave         |
+| A Heartbreaking Work of Staggering Genius | Dave         |
+| Oblivion: Stories                         | David        |
+| Consider the Lobster                      | David        |
+| 10% Happier                               | Dan          |
++-------------------------------------------+--------------+
+
+First Name Ends With 'da'
+mysql> SELECT title,author_fname FROM books WHERE author_fname LIKE '%da';
++-----------+--------------+
+| title     | author_fname |
++-----------+--------------+
+| fake_book | Freida       |
++-----------+--------------+
+
+LIKE Underscore '_'
+_ is a character
+
+mysql> SELECT title,stock_quantity FROM books WHERE stock_quantity LIKE '____';                                            
++----------------------+----------------+
+| title                | stock_quantity |
++----------------------+----------------+
+| Lincoln In The Bardo |           1000 |
++----------------------+----------------+
+
+Title With Special Character % - Use Escape Character '\'
+mysql> SELECT author_lname,author_fname,title FROM books WHERE title LIKE '%\%%';                                          
++--------------+--------------+-------------+
+| author_lname | author_fname | title       |
++--------------+--------------+-------------+
+| Harris       | Dan          | 10% Happier |
++--------------+--------------+-------------+
+
+mysql> SELECT title FROM books WHERE title LIKE '%stories%';                                                                
++-----------------------------------------------------+
+| title                                               |
++-----------------------------------------------------+
+| What We Talk About When We Talk About Love: Stories |
+| Where I'm Calling From: Selected Stories            |
+| Oblivion: Stories                                   |
++-----------------------------------------------------+
+
+mysql> SELECT title,pages FROM books ORDER BY pages DESC LIMIT 1;
++-------------------------------------------+-------+
+| title                                     | pages |
++-------------------------------------------+-------+
+| The Amazing Adventures of Kavalier & Clay |   634 |
++-------------------------------------------+-------+
+
+mysql> SELECT CONCAT(title,' - ',released_year) AS 'Summary' FROM books ORDER BY released_year DESC LIMIT 3;
++-----------------------------+
+| Summary                     |
++-----------------------------+
+| Lincoln In The Bardo - 2017 |
+| Norse Mythology - 2016      |
+| 10% Happier - 2014          |
++-----------------------------+
+
+mysql> SELECT title,author_lname FROM books WHERE author_lname LIKE '% %';
++----------------------+----------------+
+| title                | author_lname   |
++----------------------+----------------+
+| Oblivion: Stories    | Foster Wallace |
+| Consider the Lobster | Foster Wallace |
++----------------------+----------------+
+
+mysql> SELECT CONCAT(SUBSTRING(title,1,12),'...'),released_year,stock_quantity FROM books ORDER BY stock_quantity ASC LIMIT 3;
++-------------------------------------+---------------+----------------+
+| CONCAT(SUBSTRING(title,1,12),'...') | released_year | stock_quantity |
++-------------------------------------+---------------+----------------+
+| American God...                     |          2001 |             12 |
+| Where I'm Ca...                     |          1989 |             12 |
+| What We Talk...                     |          1981 |             23 |
++-------------------------------------+---------------+----------------+
+
+mysql> SELECT title,author_lname FROM books ORDER BY author_lname,title;
++-----------------------------------------------------+----------------+
+| title                                               | author_lname   |
++-----------------------------------------------------+----------------+
+| What We Talk About When We Talk About Love: Stories | Carver         |
+| Where I'm Calling From: Selected Stories            | Carver         |
+| The Amazing Adventures of Kavalier & Clay           | Chabon         |
+| White Noise                                         | DeLillo        |
+| A Heartbreaking Work of Staggering Genius           | Eggers         |
+| A Hologram for the King: A Novel                    | Eggers         |
+| The Circle                                          | Eggers         |
+| Consider the Lobster                                | Foster Wallace |
+| Oblivion: Stories                                   | Foster Wallace |
+| American Gods                                       | Gaiman         |
+| Coraline                                            | Gaiman         |
+| Norse Mythology                                     | Gaiman         |
+| 10% Happier                                         | Harris         |
+| fake_book                                           | Harris         |
+| Interpreter of Maladies                             | Lahiri         |
+| The Namesake                                        | Lahiri         |
+| Lincoln In The Bardo                                | Saunders       |
+| Just Kids                                           | Smith          |
+| Cannery Row                                         | Steinbeck      |
++-----------------------------------------------------+----------------+
+
+mysql> SELECT DISTINCT UPPER(CONCAT('my favorite author is ',author_fname,' ',author_lname,'!')) AS 'Yelling...' FROM books ORDER BY author_lname;
++---------------------------------------------+
+| Yelling...                                  |
++---------------------------------------------+
+| MY FAVORITE AUTHOR IS RAYMOND CARVER!       |
+| MY FAVORITE AUTHOR IS MICHAEL CHABON!       |
+| MY FAVORITE AUTHOR IS DON DELILLO!          |
+| MY FAVORITE AUTHOR IS DAVE EGGERS!          |
+| MY FAVORITE AUTHOR IS DAVID FOSTER WALLACE! |
+| MY FAVORITE AUTHOR IS NEIL GAIMAN!          |
+| MY FAVORITE AUTHOR IS FREIDA HARRIS!        |
+| MY FAVORITE AUTHOR IS DAN HARRIS!           |
+| MY FAVORITE AUTHOR IS JHUMPA LAHIRI!        |
+| MY FAVORITE AUTHOR IS GEORGE SAUNDERS!      |
+| MY FAVORITE AUTHOR IS PATTI SMITH!          |
+| MY FAVORITE AUTHOR IS JOHN STEINBECK!       |
++---------------------------------------------+
+
+
+SQL Aggregate Functions
+The SQL COUNT(), AVG() and SUM() Functions
+
+The COUNT() function returns the number of rows that matches a specified criteria.
+
+The AVG() function returns the average value of a numeric column.
+
+The SUM() function returns the total sum of a numeric column.
+
+mysql> SELECT COUNT(*) FROM books;
++----------+
+| COUNT(*) |
++----------+
+|       19 |
++----------+
+
+mysql> SELECT COUNT(DISTINCT author_fname) FROM books;                                                                     
++------------------------------+
+| COUNT(DISTINCT author_fname) |
++------------------------------+
+|                           12 |
++------------------------------+
+
+mysql> SELECT DISTINCT author_lname,author_fname FROM books;
++----------------+--------------+
+| author_lname   | author_fname |
++----------------+--------------+
+| Lahiri         | Jhumpa       |
+| Gaiman         | Neil         |
+| Eggers         | Dave         |
+| Chabon         | Michael      |
+| Smith          | Patti        |
+| Carver         | Raymond      |
+| DeLillo        | Don          |
+| Steinbeck      | John         |
+| Foster Wallace | David        |
+| Harris         | Dan          |
+| Harris         | Freida       |
+| Saunders       | George       |
++----------------+--------------+
+12 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(DISTINCT author_lname,author_fname) FROM books;                                                        
++-------------------------------------------+
+| COUNT(DISTINCT author_lname,author_fname) |
++-------------------------------------------+
+|                                        12 |
++-------------------------------------------+
+
+mysql> SELECT title FROM books WHERE title LIKE '%the%';
++-------------------------------------------+
+| title                                     |
++-------------------------------------------+
+| The Namesake                              |
+| A Hologram for the King: A Novel          |
+| The Circle                                |
+| The Amazing Adventures of Kavalier & Clay |
+| Consider the Lobster                      |
+| Lincoln In The Bardo                      |
++-------------------------------------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(*) FROM books WHERE title LIKE '%the%';                                                                
++----------+
+| COUNT(*) |
++----------+
+|        6 |
++----------+
+
+The SQL GROUP BY Statement
+he GROUP BY statement is often used with aggregate functions (COUNT, MAX, MIN, SUM, AVG) to group the result-set by one or more columns.
+
+SELECT column_name(s)
+FROM table_name
+WHERE condition
+GROUP BY column_name(s)
+ORDER BY column_name(s);
+
+mysql> SELECT author_lname,author_fname, COUNT(*) FROM books GROUP BY author_lname,author_fname;
++----------------+--------------+----------+
+| author_lname   | author_fname | COUNT(*) |
++----------------+--------------+----------+
+| Carver         | Raymond      |        2 |
+| Chabon         | Michael      |        1 |
+| DeLillo        | Don          |        1 |
+| Eggers         | Dave         |        3 |
+| Foster Wallace | David        |        2 |
+| Gaiman         | Neil         |        3 |
+| Harris         | Dan          |        1 |
+| Harris         | Freida       |        1 |
+| Lahiri         | Jhumpa       |        2 |
+| Saunders       | George       |        1 |
+| Smith          | Patti        |        1 |
+| Steinbeck      | John         |        1 |
++----------------+--------------+----------+
+
+mysql> SELECT released_year, COUNT(*) FROM books GROUP BY released_year;
++---------------+----------+
+| released_year | COUNT(*) |
++---------------+----------+
+|          1945 |        1 |
+|          1981 |        1 |
+|          1985 |        1 |
+|          1989 |        1 |
+|          1996 |        1 |
+|          2000 |        1 |
+|          2001 |        3 |
+|          2003 |        2 |
+|          2004 |        1 |
+|          2005 |        1 |
+|          2010 |        1 |
+|          2012 |        1 |
+|          2013 |        1 |
+|          2014 |        1 |
+|          2016 |        1 |
+|          2017 |        1 |
++---------------+----------+
+
+
+The SQL MIN() and MAX() Functions
+The MIN() function returns the smallest value of the selected column.
+
+The MAX() function returns the largest value of the selected column.
+
+mysql> SELECT MIN(released_year) FROM books;                                                                               
++--------------------+
+| MIN(released_year) |
++--------------------+
+|               1945 |
++--------------------+
+
+mysql> SELECT MAX(pages) FROM books;                                                                                       
++------------+
+| MAX(pages) |
++------------+
+|        634 |
++------------+
+
+mysql> SELECT title,pages FROM books ORDER BY pages ASC LIMIT 1;                                                           
++-----------------------------------------------------+-------+
+| title                                               | pages |
++-----------------------------------------------------+-------+
+| What We Talk About When We Talk About Love: Stories |   176 |
++-----------------------------------------------------+-------+
+
+SAME RESULTS, SLOWER FOR SQL... ---
+                                  |
+                                  v
+mysql> SELECT title,pages FROM books WHERE pages=(SELECT MIN(pages) FROM books);
++-----------------------------------------------------+-------+
+| title                                               | pages |
++-----------------------------------------------------+-------+
+| What We Talk About When We Talk About Love: Stories |   176 |
++-----------------------------------------------------+-------+
+
+MIN / MAX W/GROUP BY
+
+Find 1st Year Author Published Book
+mysql> SELECT author_fname,author_lname, MIN(released_year) FROM books GROUP BY author_lname,author_fname;
++--------------+----------------+--------------------+
+| author_fname | author_lname   | MIN(released_year) |
++--------------+----------------+--------------------+
+| Raymond      | Carver         |               1981 |
+| Michael      | Chabon         |               2000 |
+| Don          | DeLillo        |               1985 |
+| Dave         | Eggers         |               2001 |
+| David        | Foster Wallace |               2004 |
+| Neil         | Gaiman         |               2001 |
+| Dan          | Harris         |               2014 |
+| Freida       | Harris         |               2001 |
+| Jhumpa       | Lahiri         |               1996 |
+| George       | Saunders       |               2017 |
+| Patti        | Smith          |               2010 |
+| John         | Steinbeck      |               1945 |
++--------------+----------------+--------------------+
+
+mysql> SELECT CONCAT(author_fname,' ',author_lname) AS 'Full Name', MIN(released_year) AS 'First Published' FROM books GROUP BY author_lname,author_fname ORDER BY MIN(released_year) DESC;
++----------------------+-----------------+
+| Full Name            | First Published |
++----------------------+-----------------+
+| George Saunders      |            2017 |
+| Dan Harris           |            2014 |
+| Patti Smith          |            2010 |
+| David Foster Wallace |            2004 |
+| Freida Harris        |            2001 |
+| Neil Gaiman          |            2001 |
+| Dave Eggers          |            2001 |
+| Michael Chabon       |            2000 |
+| Jhumpa Lahiri        |            1996 |
+| Don DeLillo          |            1985 |
+| Raymond Carver       |            1981 |
+| John Steinbeck       |            1945 |
++----------------------+-----------------+
+
+Find Longest(Max Pages) Published By An Author
+mysql> SELECT author_fname,author_lname,MAX(pages) FROM books GROUP BY author_fname,author_lname;
++--------------+----------------+------------+
+| author_fname | author_lname   | MAX(pages) |
++--------------+----------------+------------+
+| Dan          | Harris         |        256 |
+| Dave         | Eggers         |        504 |
+| David        | Foster Wallace |        343 |
+| Don          | DeLillo        |        320 |
+| Freida       | Harris         |        428 |
+| George       | Saunders       |        367 |
+| Jhumpa       | Lahiri         |        291 |
+| John         | Steinbeck      |        181 |
+| Michael      | Chabon         |        634 |
+| Neil         | Gaiman         |        465 |
+| Patti        | Smith          |        304 |
+| Raymond      | Carver         |        526 |
++--------------+----------------+------------+
+
+mysql> SELECT CONCAT(author_fname,' ',author_lname) AS 'Full Name',MAX(pages) FROM books GROUP BY author_fname,author_lname ORDER BY MAX(pages) DESC;
++----------------------+------------+
+| Full Name            | MAX(pages) |
++----------------------+------------+
+| Michael Chabon       |        634 |
+| Raymond Carver       |        526 |
+| Dave Eggers          |        504 |
+| Neil Gaiman          |        465 |
+| Freida Harris        |        428 |
+| George Saunders      |        367 |
+| David Foster Wallace |        343 |
+| Don DeLillo          |        320 |
+| Patti Smith          |        304 |
+| Jhumpa Lahiri        |        291 |
+| Dan Harris           |        256 |
+| John Steinbeck       |        181 |
++----------------------+------------+
+
+
+The SUM() function returns the total sum of a numeric column.
+
+SELECT SUM(column_name)
+FROM table_name
+WHERE condition;
+
+mysql> SELECT SUM(pages) FROM books;
++------------+
+| SUM(pages) |
++------------+
+|       6623 |
++------------+
+
+mysql> SELECT author_lname,author_fname,SUM(pages) FROM books GROUP BY author_lname,author_fname ORDER BY SUM(pages) DESC;
++----------------+--------------+------------+
+| author_lname   | author_fname | SUM(pages) |
++----------------+--------------+------------+
+| Eggers         | Dave         |       1293 |
+| Gaiman         | Neil         |        977 |
+| Carver         | Raymond      |        702 |
+| Foster Wallace | David        |        672 |
+| Chabon         | Michael      |        634 |
+| Lahiri         | Jhumpa       |        489 |
+| Harris         | Freida       |        428 |
+| Saunders       | George       |        367 |
+| DeLillo        | Don          |        320 |
+| Smith          | Patti        |        304 |
+| Harris         | Dan          |        256 |
+| Steinbeck      | John         |        181 |
++----------------+--------------+------------+
+
+The AVG() function returns the average value of a numeric column.
+
+SELECT AVG(column_name)
+FROM table_name
+WHERE condition;
+
+mysql> SELECT AVG(pages) FROM books;
++------------+
+| AVG(pages) |
++------------+
+|   348.5789 |
++------------+
+
+mysql> SELECT AVG(released_year) FROM books;                                                                               
++--------------------+
+| AVG(released_year) |
++--------------------+
+|          1999.7895 |
++--------------------+
+
+mysql> SELECT author_fname,author_lname,AVG(pages) FROM books GROUP BY author_lname,author_fname;                     
++--------------+----------------+------------+
+| author_fname | author_lname   | AVG(pages) |
++--------------+----------------+------------+
+| Raymond      | Carver         |   351.0000 |
+| Michael      | Chabon         |   634.0000 |
+| Don          | DeLillo        |   320.0000 |
+| Dave         | Eggers         |   431.0000 |
+| David        | Foster Wallace |   336.0000 |
+| Neil         | Gaiman         |   325.6667 |
+| Dan          | Harris         |   256.0000 |
+| Freida       | Harris         |   428.0000 |
+| Jhumpa       | Lahiri         |   244.5000 |
+| George       | Saunders       |   367.0000 |
+| Patti        | Smith          |   304.0000 |
+| John         | Steinbeck      |   181.0000 |
++--------------+----------------+------------+
+
+mysql> SELECT released_year,AVG(stock_quantity) FROM books GROUP BY released_year ORDER BY released_year DESC;
++---------------+---------------------+
+| released_year | AVG(stock_quantity) |
++---------------+---------------------+
+|          2017 |           1000.0000 |
+|          2016 |             43.0000 |
+|          2014 |             29.0000 |
+|          2013 |             26.0000 |
+|          2012 |            154.0000 |
+|          2010 |             55.0000 |
+|          2005 |             92.0000 |
+|          2004 |            172.0000 |
+|          2003 |             66.0000 |
+|          2001 |            134.3333 |
+|          2000 |             68.0000 |
+|          1996 |             97.0000 |
+|          1989 |             12.0000 |
+|          1985 |             49.0000 |
+|          1981 |             23.0000 |
+|          1945 |             95.0000 |
++---------------+---------------------+
+
+
+Aggregate Function Challenge
+
+Print Total Number of Books In Database
+mysql> SELECT COUNT(title) FROM books;
++--------------+
+| COUNT(title) |
++--------------+
+|           19 |
++--------------+
+
+--or--
+
+mysql> SELECT COUNT(*) FROM books;
+
+
+mysql> SELECT COUNT(title),released_year FROM books GROUP BY released_year ORDER BY released_year DESC;
++--------------+---------------+
+| COUNT(title) | released_year |
++--------------+---------------+
+|            1 |          2017 |
+|            1 |          2016 |
+|            1 |          2014 |
+|            1 |          2013 |
+|            1 |          2012 |
+|            1 |          2010 |
+|            1 |          2005 |
+|            1 |          2004 |
+|            2 |          2003 |
+|            3 |          2001 |
+|            1 |          2000 |
+|            1 |          1996 |
+|            1 |          1989 |
+|            1 |          1985 |
+|            1 |          1981 |
+|            1 |          1945 |
++--------------+---------------+
+
+--or--
+
+mysql> SELECT COUNT(title),released_year FROM books GROUP BY released_year ORDER BY released_year DESC;
+
+
+mysql> SELECT SUM(stock_quantity) FROM books;                        
++---------------------+
+| SUM(stock_quantity) |
++---------------------+
+|                2450 |
++---------------------+
+
+
+Average Release Year By Author
+mysql> SELECT author_fname,author_lname,AVG(released_year) FROM books GROUP BY author_lname,author_fname;
++--------------+----------------+--------------------+
+| author_fname | author_lname   | AVG(released_year) |
++--------------+----------------+--------------------+
+| Raymond      | Carver         |          1985.0000 |
+| Michael      | Chabon         |          2000.0000 |
+| Don          | DeLillo        |          1985.0000 |
+| Dave         | Eggers         |          2008.6667 |
+| David        | Foster Wallace |          2004.5000 |
+| Neil         | Gaiman         |          2006.6667 |
+| Dan          | Harris         |          2014.0000 |
+| Freida       | Harris         |          2001.0000 |
+| Jhumpa       | Lahiri         |          1999.5000 |
+| George       | Saunders       |          2017.0000 |
+| Patti        | Smith          |          2010.0000 |
+| John         | Steinbeck      |          1945.0000 |
++--------------+----------------+--------------------+
+
+Author Who Wrote The Longest Book
+mysql> SELECT CONCAT(author_fname,', ',author_fname) AS 'Full Name',title AS 'Title',pages AS 'Page Count' FROM books ORDER BY pages DESC LIMIT 1;
++------------------+-------------------------------------------+------------+
+| Full Name        | Title                                     | Page Count |
++------------------+-------------------------------------------+------------+
+| Michael, Michael | The Amazing Adventures of Kavalier & Clay |        634 |
++------------------+-------------------------------------------+------------+
+
+Books By Year, Average Pages
+mysql> SELECT released_year,COUNT(title),AVG(pages) FROM books GROUP BY released_year ORDER BY released_year DESC;
++---------------+--------------+------------+
+| released_year | COUNT(title) | AVG(pages) |
++---------------+--------------+------------+
+|          2017 |            1 |   367.0000 |
+|          2016 |            1 |   304.0000 |
+|          2014 |            1 |   256.0000 |
+|          2013 |            1 |   504.0000 |
+|          2012 |            1 |   352.0000 |
+|          2010 |            1 |   304.0000 |
+|          2005 |            1 |   343.0000 |
+|          2004 |            1 |   329.0000 |
+|          2003 |            2 |   249.5000 |
+|          2001 |            3 |   443.3333 |
+|          2000 |            1 |   634.0000 |
+|          1996 |            1 |   198.0000 |
+|          1989 |            1 |   526.0000 |
+|          1985 |            1 |   320.0000 |
+|          1981 |            1 |   176.0000 |
+|          1945 |            1 |   181.0000 |
++---------------+--------------+------------+
