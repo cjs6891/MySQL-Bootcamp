@@ -2435,3 +2435,51 @@ mysql> SELECT * FROM customers RIGHT JOIN orders ON customers.id = orders.custom
 |    5 | Bette      | Davis     | bette@aol.com    |  5 | 1999-04-11 |       450.25 |           5 |
 +------+------------+-----------+------------------+----+------------+--------------+-------------+
 
+ON DELETE CASCADE
+*** When A Customer Is Deleted With A Corresponding Order, Delete The Order As Well...
+
+CREATE TABLE orders(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_date DATE,
+    order_amount DECIMAL(8,2),
+    customer_id INT,
+    FOREIGN KEY(customer_id) REFERENCES customers(id)
+    ON DELETE CASCADE
+);
+
+
+EXERCISES:
+
+CREATE TABLE students(
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       first_name VARCHAR(255)
+);
+
+CREATE TABLE papers(
+       title VARCHAR(255),
+       grade INT,
+       student_id INT,
+       FOREIGN KEY(student_id) REFERENCES students(id)
+);
+
+INSERT INTO students (first_name) VALUES 
+('Caleb'), ('Samantha'), ('Raj'), ('Carlos'), ('Lisa');
+
+INSERT INTO papers (student_id, title, grade ) VALUES
+(1, 'My First Book Report', 60),
+(1, 'My Second Book Report', 75),
+(2, 'Russian Lit Through The Ages', 94),
+(2, 'De Montaigne and The Art of The Essay', 98),
+(4, 'Borges and Magical Realism', 89);
+
+
+mysql> SELECT students.first_name,papers.title,papers.grade FROM students LEFT JOIN papers ON students.id=papers.student_id WHERE papers.title != 'NULL' ORDER BY students.first_name DESC;
++------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Samantha   | Russian Lit Through The Ages          |    94 |
+| Samantha   | De Montaigne and The Art of The Essay |    98 |
+| Carlos     | Borges and Magical Realism            |    89 |
+| Caleb      | My First Book Report                  |    60 |
+| Caleb      | My Second Book Report                 |    75 |
++------------+---------------------------------------+-------+
