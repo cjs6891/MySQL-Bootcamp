@@ -1664,3 +1664,774 @@ mysql> SELECT released_year,COUNT(title),AVG(pages) FROM books GROUP BY released
 |          1981 |            1 |   176.0000 |
 |          1945 |            1 |   181.0000 |
 +---------------+--------------+------------+
+
+MySQL Data Types
+In MySQL there are three main data types : text, number, and Date/Time types.
+
+https://www.w3schools.com/sql/sql_datatypes.asp
+https://dev.mysql.com/doc/refman/5.7/en/data-types.html
+
+Text
+CHAR, Holds a fixed length string (can contain letters, numbers, and special characters). The fixed size is specified in parenthesis. Can store up to 255 characters
+
+* CHAR is faster for fixed named text, ex. State Abbreviations NY/CA, Y/N, Sex 
+M/F
+
+Numeric
+INT, Numbers W/O Decimal Places
+
+DECIMAL(size,d)
+          |  |
+          |  - Number of Decimal Places
+          - Number of Digits
+
+Example:
+DECIMAL(5,2)
+<-- 5 Digits, 2 Decimal -->
+          999.99
+
+FLOAT & DOUBLE, store large numbers using less space BUT it comes at the cost of precision; floating-point values are approximate and not stored as exact values
+
+FLOAT is ~7 Characters of Precision
+DOUBLE is ~14 Characters of Precision
+
+* Always try to use DECIMAL unless precision doesn't matter...
+
+
+Date/Time
+DATE() - Format: YYYY-MM-DD
+* The supported range is from '1000-01-01' to '9999-12-31'
+
+TIME() - Format: HH:MM:SS
+* The supported range is from '-838:59:59' to '838:59:59'
+
+DATETIME() - Format: YYYY-MM-DD HH:MM:SS
+* The supported range is from '1000-01-01 00:00:00' to '9999-12-31 23:59:59'
+
+CURDATE() - Current DATE()
+CURTIME() - Current TIME()
+NOW() - Current DATETIME()
+
+Formatting Dates
+https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html
+DAY()
+DAYNAME()
+DAYOFWEEK()
+DAYOFYEAR()
+MONTH()
+MONTHNAME()
+HOUR()
+
+mysql> SELECT name,birthdate,DAY(birthdate) FROM people;
++--------+------------+----------------+
+| name   | birthdate  | DAY(birthdate) |
++--------+------------+----------------+
+| Jasper | 2016-12-08 |              8 |
+| Helen  | 1988-09-18 |             18 |
+| Stefan | 1963-07-30 |             30 |
++--------+------------+----------------+
+
+mysql> SELECT name,birthdate,DAYNAME(birthdate) FROM people;                                                               
++--------+------------+--------------------+
+| name   | birthdate  | DAYNAME(birthdate) |
++--------+------------+--------------------+
+| Jasper | 2016-12-08 | Thursday           |
+| Helen  | 1988-09-18 | Sunday             |
+| Stefan | 1963-07-30 | Tuesday            |
++--------+------------+--------------------+
+
+mysql> SELECT name,birthdate,DAYOFWEEK(birthdate) FROM people;                                                             
++--------+------------+----------------------+
+| name   | birthdate  | DAYOFWEEK(birthdate) |
++--------+------------+----------------------+
+| Jasper | 2016-12-08 |                    5 |
+| Helen  | 1988-09-18 |                    1 |
+| Stefan | 1963-07-30 |                    3 |
++--------+------------+----------------------+
+
+mysql> SELECT name,birthdate,DAYOFYEAR(birthdate) FROM people;                                                             
++--------+------------+----------------------+
+| name   | birthdate  | DAYOFYEAR(birthdate) |
++--------+------------+----------------------+
+| Jasper | 2016-12-08 |                  343 |
+| Helen  | 1988-09-18 |                  262 |
+| Stefan | 1963-07-30 |                  211 |
++--------+------------+----------------------+
+
+mysql> SELECT name,birthday,MONTHNAME(birthday) FROM people;                                                               
++--------+---------------------+---------------------+
+| name   | birthday            | MONTHNAME(birthday) |
++--------+---------------------+---------------------+
+| Jasper | 2016-12-08 18:15:05 | December            |
+| Helen  | 1988-09-18 03:18:56 | September           |
+| Stefan | 1963-07-30 19:06:17 | July                |
++--------+---------------------+---------------------+
+
+mysql> SELECT name,birthday,HOUR(birthday) FROM people;                                                                    
++--------+---------------------+----------------+
+| name   | birthday            | HOUR(birthday) |
++--------+---------------------+----------------+
+| Jasper | 2016-12-08 18:15:05 |             18 |
+| Helen  | 1988-09-18 03:18:56 |              3 |
+| Stefan | 1963-07-30 19:06:17 |             19 |
++--------+---------------------+----------------+
+
+mysql> SELECT name,birthday,MINUTE(birthday) FROM people;                                                                  
++--------+---------------------+------------------+
+| name   | birthday            | MINUTE(birthday) |
++--------+---------------------+------------------+
+| Jasper | 2016-12-08 18:15:05 |               15 |
+| Helen  | 1988-09-18 03:18:56 |               18 |
+| Stefan | 1963-07-30 19:06:17 |                6 |
++--------+---------------------+------------------+
+
+mysql> SELECT CONCAT(MONTHNAME(birthday),' ',DAY(birthday),', ',YEAR(birthday)) FROM people;                               
++-------------------------------------------------------------------+
+| CONCAT(MONTHNAME(birthday),' ',DAY(birthday),', ',YEAR(birthday)) |
++-------------------------------------------------------------------+
+| December 8, 2016                                                  |
+| September 18, 1988                                                |
+| July 30, 1963                                                     |
++-------------------------------------------------------------------+
+
+Date Format Function
+https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format
+
+mysql> SELECT name,DATE_FORMAT(birthday,'%W, %M %D %Y') FROM people;                                                       
++--------+--------------------------------------+
+| name   | DATE_FORMAT(birthday,'%W, %M %D %Y') |
++--------+--------------------------------------+
+| Jasper | Thursday, December 8th 2016          |
+| Helen  | Sunday, September 18th 1988          |
+| Stefan | Tuesday, July 30th 1963              |
++--------+--------------------------------------+
+
+mysql> SELECT name,DATE_FORMAT(birthday,'Was Born on a %W') FROM people;                                                   
++--------+------------------------------------------+
+| name   | DATE_FORMAT(birthday,'Was Born on a %W') |
++--------+------------------------------------------+
+| Jasper | Was Born on a Thursday                   |
+| Helen  | Was Born on a Sunday                     |
+| Stefan | Was Born on a Tuesday                    |
++--------+------------------------------------------+
+
+
+MySQL DATEDIFF
+https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_datediff
+
+mysql> SELECT name,birthdate,DATEDIFF(NOW(), birthdate) FROM people;                                                                      
++--------+------------+----------------------------+
+| name   | birthdate  | DATEDIFF(NOW(), birthdate) |
++--------+------------+----------------------------+
+| Jasper | 2016-12-08 |                        242 |
+| Helen  | 1988-09-18 |                      10550 |
+| Stefan | 1963-07-30 |                      19732 |
++--------+------------+----------------------------+
+
+DATE_ADD
+DATE_SUB
+
+mysql> SELECT name,birthday,DATE_ADD(birthday, INTERVAL 1 MONTH) FROM people;                                                             
++--------+---------------------+--------------------------------------+
+| name   | birthday            | DATE_ADD(birthday, INTERVAL 1 MONTH) |
++--------+---------------------+--------------------------------------+
+| Jasper | 2016-12-08 18:15:05 | 2017-01-08 18:15:05                  |
+| Helen  | 1988-09-18 03:18:56 | 1988-10-18 03:18:56                  |
+| Stefan | 1963-07-30 19:06:17 | 1963-08-30 19:06:17                  |
++--------+---------------------+--------------------------------------+
+
+--or--
+
+mysql> SELECT name,birthday,birthday + INTERVAL 1 MONTH FROM people;
++--------+---------------------+-----------------------------+
+| name   | birthday            | birthday + INTERVAL 1 MONTH |
++--------+---------------------+-----------------------------+
+| Jasper | 2016-12-08 18:15:05 | 2017-01-08 18:15:05         |
+| Helen  | 1988-09-18 03:18:56 | 1988-10-18 03:18:56         |
+| Stefan | 1963-07-30 19:06:17 | 1963-08-30 19:06:17         |
++--------+---------------------+-----------------------------+
+
+mysql> SELECT name,birthday,birthday - INTERVAL 1 MONTH FROM people;                                                                      
++--------+---------------------+-----------------------------+
+| name   | birthday            | birthday - INTERVAL 1 MONTH |
++--------+---------------------+-----------------------------+
+| Jasper | 2016-12-08 18:15:05 | 2016-11-08 18:15:05         |
+| Helen  | 1988-09-18 03:18:56 | 1988-08-18 03:18:56         |
+| Stefan | 1963-07-30 19:06:17 | 1963-06-30 19:06:17         |
++--------+---------------------+-----------------------------+
+
+ADD 1 Month, 1 Year to a date
+mysql> SELECT name,birthday,birthday - INTERVAL 1 MONTH, birthday + INTERVAL 1 YEAR FROM people;
++--------+---------------------+-----------------------------+----------------------------+
+| name   | birthday            | birthday - INTERVAL 1 MONTH | birthday + INTERVAL 1 YEAR |
++--------+---------------------+-----------------------------+----------------------------+
+| Jasper | 2016-12-08 18:15:05 | 2016-11-08 18:15:05         | 2017-12-08 18:15:05        |
+| Helen  | 1988-09-18 03:18:56 | 1988-08-18 03:18:56         | 1989-09-18 03:18:56        |
+| Stefan | 1963-07-30 19:06:17 | 1963-06-30 19:06:17         | 1964-07-30 19:06:17        |
++--------+---------------------+-----------------------------+----------------------------+
+
+https://dev.mysql.com/doc/refman/5.7/en/datetime.html
+
+TIMESTAMP
+The supported range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC
+
+DATETIME
+The supported range is '1000-01-01 00:00:00' to '9999-12-31 23:59:59'
+
+mysql> CREATE TABLE comment(content VARCHAR(255), changed_at TIMESTAMP DEFAULT NOW());
+
+mysql> CREATE TABLE voice(content VARCHAR(255), changed_at TIMESTAMP DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP); 
+
+--or--
+
+mysql> CREATE TABLE voice(content VARCHAR(255), changed_at TIMESTAMP DEFAULT NOW() ON UPDATE NOW();
+
+mysql> SELECT CURTIME();
+mysql> SELECT CURDATE();
+
+mysql> SELECT DAYOFWEEK(NOW());
+
+mysql> SELECT DATE_FORMAT(NOW(), '%W');
++--------------------------+
+| DATE_FORMAT(NOW(), '%W') |
++--------------------------+
+| Tuesday                  |
++--------------------------+
+
+mysql> SELECT DATE_FORMAT(NOW(), '%W, %M');
++------------------------------+
+| DATE_FORMAT(NOW(), '%W, %M') |
++------------------------------+
+| Tuesday, August              |
++------------------------------+
+
+mysql> SELECT DATE_FORMAT(NOW(), '%m/%d/%Y');
++--------------------------------+
+| DATE_FORMAT(NOW(), '%m/%d/%Y') |
++--------------------------------+
+| 08/08/2017                     |
++--------------------------------+
+
+mysql> SELECT DATE_FORMAT(NOW(), '%M %D, %Y at %T');
++---------------------------------------+
+| DATE_FORMAT(NOW(), '%M %D, %Y at %T') |
++---------------------------------------+
+| August 8th, 2017 at 15:05:06          |
++---------------------------------------+
+
+mysql> CREATE TABLE tweets(content VARCHAR(140), username VARCHAR(25), time TIMESTAMP DEFAULT NOW() ON UPDATE NOW());
+
+
+Logical Operators
+The SQL AND, OR and NOT Operators
+The WHERE clause can be combined with AND, OR, and NOT operators.
+
+ - The AND operator displays a record if all the conditions separated by AND is TRUE
+  - The OR operator displays a record if any of the conditions separated by OR is TRUE
+
+https://dev.mysql.com/doc/refman/5.7/en/non-typed-operators.html
+
+Not equal operator
+!=
+
+mysql> SELECT title,released_year FROM books WHERE released_year != 2017;
+
+mysql> SELECT title,author_lname FROM books WHERE author_lname != 'harris';
+
+LIKE / NOT LIKE
+
+mysql> SELECT title FROM books WHERE title LIKE 'w%';
+
++-----------------------------------------------------+
+| title                                               |
++-----------------------------------------------------+
+| What We Talk About When We Talk About Love: Stories |
+| Where I'm Calling From: Selected Stories            |
+| White Noise                                         |
++-----------------------------------------------------+
+
+mysql> SELECT title FROM books WHERE title NOT LIKE 'w%';                                                                                 
++-------------------------------------------+
+| title                                     |
++-------------------------------------------+
+| The Namesake                              |
+| Norse Mythology                           |
+| American Gods                             |
+| Interpreter of Maladies                   |
+| A Hologram for the King: A Novel          |
+| The Circle                                |
+| The Amazing Adventures of Kavalier & Clay |
+| Just Kids                                 |
+| A Heartbreaking Work of Staggering Genius |
+| Coraline                                  |
+| Cannery Row                               |
+| Oblivion: Stories                         |
+| Consider the Lobster                      |
+| 10% Happier                               |
+| fake_book                                 |
+| Lincoln In The Bardo                      |
++-------------------------------------------+
+
+Greater than operator
+>
+
+mysql> SELECT * FROM books WHERE released_year > 2000;
+
+Greater than or equal operator
+>=
+
+mysql> SELECT title,released_year FROM books WHERE released_year >= 2000 ORDER BY released_year DESC;
+
+Less than operator
+<
+
+Less than or equal operator
+<=
+
+mysql> SELECT title,released_year,stock_quantity FROM books WHERE released_year < 2000;
++-----------------------------------------------------+---------------+----------------+
+| title                                               | released_year | stock_quantity |
++-----------------------------------------------------+---------------+----------------+
+| Interpreter of Maladies                             |          1996 |             97 |
+| What We Talk About When We Talk About Love: Stories |          1981 |             23 |
+| Where I'm Calling From: Selected Stories            |          1989 |             12 |
+| White Noise                                         |          1985 |             49 |
+| Cannery Row                                         |          1945 |             95 |
++-----------------------------------------------------+---------------+----------------+
+
+
+Logical AND
+AND, &&
+
+mysql> SELECT * FROM books WHERE author_lname='eggers' AND released_year > 2010;
++---------+----------------------------------+--------------+--------------+---------------+----------------+-------+
+| book_id | title                            | author_fname | author_lname | released_year | stock_quantity | pages |
++---------+----------------------------------+--------------+--------------+---------------+----------------+-------+
+|       5 | A Hologram for the King: A Novel | Dave         | Eggers       |          2012 |            154 |   352 |
+|       6 | The Circle                       | Dave         | Eggers       |          2013 |             26 |   504 |
++---------+----------------------------------+--------------+--------------+---------------+----------------+-------+
+
+
+mysql> SELECT * FROM books WHERE author_lname='eggers' AND released_year > 2010 AND title LIKE '%novel%';
++---------+----------------------------------+--------------+--------------+---------------+----------------+-------+
+| book_id | title                            | author_fname | author_lname | released_year | stock_quantity | pages |
++---------+----------------------------------+--------------+--------------+---------------+----------------+-------+
+|       5 | A Hologram for the King: A Novel | Dave         | Eggers       |          2012 |            154 |   352 |
++---------+----------------------------------+--------------+--------------+---------------+----------------+-------+
+
+
+Logical OR
+OR, ||
+
+mysql> SELECT * FROM books WHERE author_lname='eggers' || released_year > 2010;                                                           
++---------+-------------------------------------------+--------------+--------------+---------------+----------------+-------+
+| book_id | title                                     | author_fname | author_lname | released_year | stock_quantity | pages |
++---------+-------------------------------------------+--------------+--------------+---------------+----------------+-------+
+|       2 | Norse Mythology                           | Neil         | Gaiman       |          2016 |             43 |   304 |
+|       5 | A Hologram for the King: A Novel          | Dave         | Eggers       |          2012 |            154 |   352 |
+|       6 | The Circle                                | Dave         | Eggers       |          2013 |             26 |   504 |
+|       9 | A Heartbreaking Work of Staggering Genius | Dave         | Eggers       |          2001 |            104 |   437 |
+|      17 | 10% Happier                               | Dan          | Harris       |          2014 |             29 |   256 |
+|      19 | Lincoln In The Bardo                      | George       | Saunders     |          2017 |           1000 |   367 |
++---------+-------------------------------------------+--------------+--------------+---------------+----------------+-------+
+
+
+The SQL BETWEEN/NOT BETWEEN Operator
+The BETWEEN operator selects values within a given range. The values can be numbers, text, or dates.
+The BETWEEN operator is inclusive: begin and end values are included. 
+
+SELECT column_name(s)
+FROM table_name
+WHERE column_name BETWEEN value1 AND value2;
+
+Between using >= <=
+
+mysql> SELECT * FROM books WHERE released_year >= 2004 AND released_year <=2015;
+
+BETWEEN
+mysql> SELECT title,released_year FROM books WHERE released_year BETWEEN 2004 AND 2015 ORDER BY released_year DESC;
++----------------------------------+---------------+
+| title                            | released_year |
++----------------------------------+---------------+
+| 10% Happier                      |          2014 |
+| The Circle                       |          2013 |
+| A Hologram for the King: A Novel |          2012 |
+| Just Kids                        |          2010 |
+| Consider the Lobster             |          2005 |
+| Oblivion: Stories                |          2004 |
++----------------------------------+---------------+
+
+NOT BETWEEN
+mysql> SELECT title,released_year FROM books WHERE released_year NOT BETWEEN 2004 AND 2015 ORDER BY released_year DESC;                   
++-----------------------------------------------------+---------------+
+| title                                               | released_year |
++-----------------------------------------------------+---------------+
+| Lincoln In The Bardo                                |          2017 |
+| Norse Mythology                                     |          2016 |
+| Coraline                                            |          2003 |
+| The Namesake                                        |          2003 |
+| A Heartbreaking Work of Staggering Genius           |          2001 |
+| American Gods                                       |          2001 |
+| fake_book                                           |          2001 |
+| The Amazing Adventures of Kavalier & Clay           |          2000 |
+| Interpreter of Maladies                             |          1996 |
+| Where I'm Calling From: Selected Stories            |          1989 |
+| White Noise                                         |          1985 |
+| What We Talk About When We Talk About Love: Stories |          1981 |
+| Cannery Row                                         |          1945 |
++-----------------------------------------------------+---------------+
+
+CAST
+* For best results when using BETWEEN with date or time values, use CAST() to explicitly convert the values to the desired data type
+
+mysql> SELECT CAST('2017-08-08' AS DATETIME);
+
+mysql> SELECT name,birthday FROM people WHERE birthday BETWEEN CAST('1980-01-01' AS DATETIME) AND CAST('2000-01-01' AS DATETIME);         
++-------+---------------------+
+| name  | birthday            |
++-------+---------------------+
+| Helen | 1988-09-18 03:18:56 |
++-------+---------------------+
+
+
+The SQL IN Operator
+The IN operator allows you to specify multiple values in a WHERE clause.
+* The IN operator is a shorthand for multiple OR conditions.
+
+SELECT column_name(s)
+FROM table_name
+WHERE column_name IN (value1, value2, ...);
+
+SELECT column_name(s)
+FROM table_name
+WHERE column_name IN (SELECT STATEMENT);
+
+mysql> SELECT title,author_lname FROM books WHERE author_lname IN('harris', 'lahiri', 'gaiman');                                          
++-------------------------+--------------+
+| title                   | author_lname |
++-------------------------+--------------+
+| The Namesake            | Lahiri       |
+| Norse Mythology         | Gaiman       |
+| American Gods           | Gaiman       |
+| Interpreter of Maladies | Lahiri       |
+| Coraline                | Gaiman       |
+| 10% Happier             | Harris       |
+| fake_book               | Harris       |
++-------------------------+--------------+
+
+NOT IN
+Does opposite of IN
+* The NOT IN operator is a shorthand from multiple != AND
+
+mysql> SELECT title,author_lname,released_year FROM books WHERE released_year NOT IN(2000,2001,2002,2003,2004,2005) ORDER BY released_year DESC;
+
+
+  MODULO %, testing for even numbers example
+
+Books Released, Odd Year !=0
+mysql> SELECT title,author_lname,released_year FROM books WHERE released_year >=2000 AND released_year % 2 !=0 ORDER BY released_year DESC;
++-------------------------------------------+----------------+---------------+
+| title                                     | author_lname   | released_year |
++-------------------------------------------+----------------+---------------+
+| Lincoln In The Bardo                      | Saunders       |          2017 |
+| The Circle                                | Eggers         |          2013 |
+| Consider the Lobster                      | Foster Wallace |          2005 |
+| The Namesake                              | Lahiri         |          2003 |
+| Coraline                                  | Gaiman         |          2003 |
+| American Gods                             | Gaiman         |          2001 |
+| A Heartbreaking Work of Staggering Genius | Eggers         |          2001 |
+| fake_book                                 | Harris         |          2001 |
++-------------------------------------------+----------------+---------------+
+
+Books Released, Even Year
+mysql> SELECT title,author_lname,released_year FROM books WHERE released_year >=2000 AND released_year % 2 = 0 ORDER BY released_year DESC;
++-------------------------------------------+----------------+---------------+
+| title                                     | author_lname   | released_year |
++-------------------------------------------+----------------+---------------+
+| Norse Mythology                           | Gaiman         |          2016 |
+| 10% Happier                               | Harris         |          2014 |
+| A Hologram for the King: A Novel          | Eggers         |          2012 |
+| Just Kids                                 | Smith          |          2010 |
+| Oblivion: Stories                         | Foster Wallace |          2004 |
+| The Amazing Adventures of Kavalier & Clay | Chabon         |          2000 |
++-------------------------------------------+----------------+---------------+
+
+
+CASE Operator(s)
+
+SELECT title,released_year,author_lname,
+    CASE
+        WHEN released_year >= 2000 THEN 'Modern Literature'
+        ELSE '20th Century Literature'
+    END AS GENRE
+FROM books;
+
++-----------------------------------------------------+---------------+----------------+-------------------------+
+| title                                               | released_year | author_lname   | GENRE                   |
++-----------------------------------------------------+---------------+----------------+-------------------------+
+| The Namesake                                        |          2003 | Lahiri         | Modern Literature       |
+| Norse Mythology                                     |          2016 | Gaiman         | Modern Literature       |
+| American Gods                                       |          2001 | Gaiman         | Modern Literature       |
+| Interpreter of Maladies                             |          1996 | Lahiri         | 20th Century Literature |
+| A Hologram for the King: A Novel                    |          2012 | Eggers         | Modern Literature       |
+| The Circle                                          |          2013 | Eggers         | Modern Literature       |
+| The Amazing Adventures of Kavalier & Clay           |          2000 | Chabon         | Modern Literature       |
+| Just Kids                                           |          2010 | Smith          | Modern Literature       |
+| A Heartbreaking Work of Staggering Genius           |          2001 | Eggers         | Modern Literature       |
+| Coraline                                            |          2003 | Gaiman         | Modern Literature       |
+| What We Talk About When We Talk About Love: Stories |          1981 | Carver         | 20th Century Literature |
+| Where I'm Calling From: Selected Stories            |          1989 | Carver         | 20th Century Literature |
+| White Noise                                         |          1985 | DeLillo        | 20th Century Literature |
+| Cannery Row                                         |          1945 | Steinbeck      | 20th Century Literature |
+| Oblivion: Stories                                   |          2004 | Foster Wallace | Modern Literature       |
+| Consider the Lobster                                |          2005 | Foster Wallace | Modern Literature       |
+| 10% Happier                                         |          2014 | Harris         | Modern Literature       |
+| fake_book                                           |          2001 | Harris         | Modern Literature       |
+| Lincoln In The Bardo                                |          2017 | Saunders       | Modern Literature       |
++-----------------------------------------------------+---------------+----------------+-------------------------+
+
+SELECT title,author_lname,stock_quantity,
+    CASE
+        WHEN stock_quantity BETWEEN 0 AND 50 THEN '*'
+        WHEN stock_quantity BETWEEN 51 AND 100 THEN '**'
+        ELSE '***'
+    END AS STOCK
+FROM books;
+
++-----------------------------------------------------+----------------+----------------+-------+
+| title                                               | author_lname   | stock_quantity | STOCK |
++-----------------------------------------------------+----------------+----------------+-------+
+| The Namesake                                        | Lahiri         |             32 | *     |
+| Norse Mythology                                     | Gaiman         |             43 | *     |
+| American Gods                                       | Gaiman         |             12 | *     |
+| Interpreter of Maladies                             | Lahiri         |             97 | **    |
+| A Hologram for the King: A Novel                    | Eggers         |            154 | ***   |
+| The Circle                                          | Eggers         |             26 | *     |
+| The Amazing Adventures of Kavalier & Clay           | Chabon         |             68 | **    |
+| Just Kids                                           | Smith          |             55 | **    |
+| A Heartbreaking Work of Staggering Genius           | Eggers         |            104 | ***   |
+| Coraline                                            | Gaiman         |            100 | **    |
+| What We Talk About When We Talk About Love: Stories | Carver         |             23 | *     |
+| Where I'm Calling From: Selected Stories            | Carver         |             12 | *     |
+| White Noise                                         | DeLillo        |             49 | *     |
+| Cannery Row                                         | Steinbeck      |             95 | **    |
+| Oblivion: Stories                                   | Foster Wallace |            172 | ***   |
+| Consider the Lobster                                | Foster Wallace |             92 | **    |
+| 10% Happier                                         | Harris         |             29 | *     |
+| fake_book                                           | Harris         |            287 | ***   |
+| Lincoln In The Bardo                                | Saunders       |           1000 | ***   |
++-----------------------------------------------------+----------------+----------------+-------+
+
+--OR--
+
+SELECT title,author_lname,stock_quantity,
+    CASE
+        WHEN stock_quantity <=50  THEN'*'
+        WHEN stock_quantity <=100 THEN '**'
+        WHEN stock_quantity <=150 THEN '***'
+        WHEN stock_quantity <=200 THEN '****'
+        ELSE '*****'
+    END AS STOCK
+FROM books;
+
+
+mysql> SELECT * FROM books WHERE released_year < 1980;
+
+mysql> SELECT author_lname,title FROM books WHERE author_lname='Eggers' || author_lname='Chabon';
+--or--
+mysql> SELECT author_lname,title FROM books WHERE author_lname IN('Eggers','Chabon');
+
+mysql> SELECT author_lname,title,released_year FROM books WHERE author_lname='Lahiri' AND released_year > 2000;
+
+mysql> SELECT title,author_lname,pages FROM books WHERE pages BETWEEN 100 AND 200;
+
+mysql> SELECT title,author_lname FROM books WHERE author_lname LIKE 'c%' OR author_lname LIKE 's%';
+
+mysql> SELECT title,author_lname,
+    CASE
+        WHEN title LIKE '%stories%' THEN 'Short Stories'
+        WHEN title LIKE '%Just Kids%' THEN 'Memoir'
+        WHEN title LIKE '%Heartbreaking Work%' THEN 'Memoir'
+        ELSE 'Novel'
+    END AS TYPE
+FROM books;
+
+
+mysql> SELECT CONCAT(author_lname,', ',author_fname) AS 'Author', 
+    CASE
+        WHEN COUNT(*) >1 THEN CONCAT(COUNT(*),' ','Books...')
+        ELSE CONCAT(COUNT(*),' ','Book')
+    END AS COUNT
+FROM books GROUP BY author_lname,author_fname ORDER BY COUNT DESC;
+
++-----------------------+------------+
+| Author                | COUNT      |
++-----------------------+------------+
+| Gaiman, Neil          | 3 Books... |
+| Eggers, Dave          | 3 Books... |
+| Foster Wallace, David | 2 Books... |
+| Lahiri, Jhumpa        | 2 Books... |
+| Carver, Raymond       | 2 Books... |
+| Smith, Patti          | 1 Book     |
+| Saunders, George      | 1 Book     |
+| Steinbeck, John       | 1 Book     |
+| Chabon, Michael       | 1 Book     |
+| Harris, Freida        | 1 Book     |
+| DeLillo, Don          | 1 Book     |
+| Harris, Dan           | 1 Book     |
++-----------------------+------------+
+
+
+SQL Relationship Basics:
+ - One -to- One
+ - One -to- Many *Most Common Relationship, Example: Single Book --> Many Reviews
+ - Many -to- Many, Example: Books May Have Multiple Authors, Authors May Have Written Multiple Books
+
+ One -to- Many
+ * The Most Common Relationship
+
+ Customers & Orders
+ Customer Can Have Multiple Orders, Orders Have 1 Customer
+
+PRIMARY KEY
+The PRIMARY KEY constraint uniquely identifies each record in a database table.
+
+FOREIGN KEY
+A FOREIGN KEY is a key used to link two tables together.
+A FOREIGN KEY is a field (or collection of fields) in one table that refers to the PRIMARY KEY in another table.
+
+
+CREATE TABLE customers(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email_address VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE orders(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_date DATE,
+    order_amount DECIMAL(8,2),
+    customer_id INT,
+    FOREIGN KEY(customer_id) REFERENCES customers(id)
+);
+
+
+Joins
+A JOIN clause is used to combine rows from two or more tables, based on a related column between them.
+
+Cross Join
+First, Most Basic Join
+* Useless...
+mysql> SELECT * FROM customers,orders;
+
+ - - - 
+
+INNER JOIN
+The INNER JOIN keyword selects records that have matching values in both tables.
+
+IMPLICIT INNER JOIN, i.e. join W/O JOIN Keyword
+
+mysql> SELECT * FROM customers,orders WHERE customers.id = orders.customer_id;
++----+------------+-----------+------------------+----+------------+--------------+-------------+
+| id | first_name | last_name | email_address    | id | order_date | order_amount | customer_id |
++----+------------+-----------+------------------+----+------------+--------------+-------------+
+|  1 | Boy        | George    | george@gmail.com |  1 | 2016-02-10 |        99.99 |           1 |
+|  1 | Boy        | George    | george@gmail.com |  2 | 2017-11-11 |        35.50 |           1 |
+|  2 | George     | Michael   | gm@gmail.com     |  3 | 2014-12-12 |       800.67 |           2 |
+|  2 | George     | Michael   | gm@gmail.com     |  4 | 2015-01-03 |        12.50 |           2 |
+|  5 | Bette      | Davis     | bette@aol.com    |  5 | 1999-04-11 |       450.25 |           5 |
++----+------------+-----------+------------------+----+------------+--------------+-------------+
+
+EXPLICIT INNER JOIN, i.e. Keyword JOIN
+
+mysql> SELECT first_name,last_name,order_date,order_amount FROM customers JOIN orders ON customers.id = orders.customer_id;        
++------------+-----------+------------+--------------+
+| first_name | last_name | order_date | order_amount |
++------------+-----------+------------+--------------+
+| Boy        | George    | 2016-02-10 |        99.99 |
+| Boy        | George    | 2017-11-11 |        35.50 |
+| George     | Michael   | 2014-12-12 |       800.67 |
+| George     | Michael   | 2015-01-03 |        12.50 |
+| Bette      | Davis     | 1999-04-11 |       450.25 |
++------------+-----------+------------+--------------+
+
+mysql> SELECT first_name,last_name,order_date,SUM(order_amount) AS total_spent FROM customers JOIN orders ON customers.id = orders.customer_id GROUP BY customers.id ORDER BY total_spent DESC;
++------------+-----------+------------+-------------+
+| first_name | last_name | order_date | total_spent |
++------------+-----------+------------+-------------+
+| George     | Michael   | 2014-12-12 |      813.17 |
+| Bette      | Davis     | 1999-04-11 |      450.25 |
+| Boy        | George    | 2016-02-10 |      135.49 |
++------------+-----------+------------+-------------+
+
+
+
+LEFT JOIN
+The LEFT JOIN keyword returns all records from the left table (table1), and the matched records from the right table (table2). The result is NULL from the right side, if there is no match.
+
+mysql> SELECT * FROM customers LEFT JOIN orders ON customers.id = orders.customer_id;
++----+------------+-----------+------------------+------+------------+--------------+-------------+
+| id | first_name | last_name | email_address    | id   | order_date | order_amount | customer_id |
++----+------------+-----------+------------------+------+------------+--------------+-------------+
+|  1 | Boy        | George    | george@gmail.com |    1 | 2016-02-10 |        99.99 |           1 |
+|  1 | Boy        | George    | george@gmail.com |    2 | 2017-11-11 |        35.50 |           1 |
+|  2 | George     | Michael   | gm@gmail.com     |    3 | 2014-12-12 |       800.67 |           2 |
+|  2 | George     | Michael   | gm@gmail.com     |    4 | 2015-01-03 |        12.50 |           2 |
+|  3 | David      | Bowie     | david@gmail.com  | NULL | NULL       |         NULL |        NULL |
+|  4 | Blue       | Steele    | blue@gmail.com   | NULL | NULL       |         NULL |        NULL |
+|  5 | Bette      | Davis     | bette@aol.com    |    5 | 1999-04-11 |       450.25 |           5 |
++----+------------+-----------+------------------+------+------------+--------------+-------------+
+
+mysql> SELECT first_name,last_name,order_date,order_amount FROM customers LEFT JOIN orders ON customers.id = orders.customer_id;   
++------------+-----------+------------+--------------+
+| first_name | last_name | order_date | order_amount |
++------------+-----------+------------+--------------+
+| Boy        | George    | 2016-02-10 |        99.99 |
+| Boy        | George    | 2017-11-11 |        35.50 |
+| George     | Michael   | 2014-12-12 |       800.67 |
+| George     | Michael   | 2015-01-03 |        12.50 |
+| David      | Bowie     | NULL       |         NULL |
+| Blue       | Steele    | NULL       |         NULL |
+| Bette      | Davis     | 1999-04-11 |       450.25 |
++------------+-----------+------------+--------------+
+
+mysql> SELECT first_name,last_name,SUM(order_amount) FROM customers LEFT JOIN orders ON customers.id = orders.customer_id GROUP BY customers.id;
++------------+-----------+-------------------+
+| first_name | last_name | SUM(order_amount) |
++------------+-----------+-------------------+
+| Boy        | George    |            135.49 |
+| George     | Michael   |            813.17 |
+| David      | Bowie     |              NULL |
+| Blue       | Steele    |              NULL |
+| Bette      | Davis     |            450.25 |
++------------+-----------+-------------------+
+
+
+** IFNULL
+mysql> SELECT first_name,last_name,IFNULL(SUM(order_amount), 0) AS total_spent FROM customers LEFT JOIN orders ON customers.id = orders.customer_id GROUP BY customers.id;                                                                                            
++------------+-----------+-------------+
+| first_name | last_name | total_spent |
++------------+-----------+-------------+
+| Boy        | George    |      135.49 |
+| George     | Michael   |      813.17 |
+| David      | Bowie     |        0.00 |
+| Blue       | Steele    |        0.00 |
+| Bette      | Davis     |      450.25 |
++------------+-----------+-------------+
+
+
+RIGHT JOIN
+The RIGHT JOIN keyword returns all records from the right table (table2), and the matched records from the left table (table1). The result is NULL from the left side, when there is no match.
+
+mysql> SELECT * FROM customers RIGHT JOIN orders ON customers.id = orders.customer_id;                                             
++------+------------+-----------+------------------+----+------------+--------------+-------------+
+| id   | first_name | last_name | email_address    | id | order_date | order_amount | customer_id |
++------+------------+-----------+------------------+----+------------+--------------+-------------+
+|    1 | Boy        | George    | george@gmail.com |  1 | 2016-02-10 |        99.99 |           1 |
+|    1 | Boy        | George    | george@gmail.com |  2 | 2017-11-11 |        35.50 |           1 |
+|    2 | George     | Michael   | gm@gmail.com     |  3 | 2014-12-12 |       800.67 |           2 |
+|    2 | George     | Michael   | gm@gmail.com     |  4 | 2015-01-03 |        12.50 |           2 |
+|    5 | Bette      | Davis     | bette@aol.com    |  5 | 1999-04-11 |       450.25 |           5 |
++------+------------+-----------+------------------+----+------------+--------------+-------------+
+
