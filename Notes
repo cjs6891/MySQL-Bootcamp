@@ -2629,3 +2629,124 @@ MANY -TO- MANY
  Students <---> Classes
 
 Code-A-Long TV Show Application
+
+ - - - - - 
+
+Database Triggers
+
+SQL statements that are AUTOMATICALLY RUN when a specific table is changed
+
+Managing Triggers:
+
+Show Trigger:
+SHOW TRIGGERS;
+
+Remove Trigger:
+DROP TRIGGER trigger_name;
+
+A Word of Warning...
+Triggers Can Make Debugging HARD!
+
+The Syntax
+
+CREATE TRIGGER trigger_name 
+    trigger_time trigger_event ON table_name FOR EACH ROW
+    BEGIN
+    ...
+    END;
+
+
+trigger_time
+  BEFORE
+  AFTER
+
+trigger_event
+  INSERT
+  UPDATE
+  DELETE
+
+table_name
+  table name, example users table
+
+Template:
+
+DELIMITER $$
+
+CREATE TRIGGER trigger_name
+     trigger_time trigger_event ON table_name FOR EACH ROW
+     BEGIN
+     END;
+$$
+
+DELIMITER ;
+
+
+Age > 18 Trigger:
+ - - - - - 
+
+DELIMITER $$
+
+CREATE TRIGGER must_be_adult
+     BEFORE INSERT ON users FOR EACH ROW
+     BEGIN
+          IF NEW.age < 18
+          THEN
+              SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'Must be an adult!';
+          END IF;
+     END;
+$$
+
+DELIMITER ;
+
+ - - - - - 
+
+Random Note: "DELIMITER" changes delimiter, so DELIMITER $$ replaces ; with $$
+
+so... "SELECT * FROM users;" WOULD BE "SELECT * FROM users$$"
+
+ - - - - - - - - - - 
+
+Preventing Self-Follows, i.e. USERS from following themself
+
+DELIMITER $$
+
+CREATE TRIGGER prevent_self_follows
+     BEFORE INSERT ON follows FOR EACH ROW
+     BEGIN
+          IF NEW.follower_id = NEW.followee_id
+          THEN
+               SIGNAL SQLSTATE '45000'
+               SET MESSAGE_TEXT = "You Can't Follow Yourself!";
+          END IF;
+     END;
+$$
+
+DELIMITER ;
+
+ - - - - - - - - - - 
+
+Logging "Unfollowers"
+
+* create unfollows table...
+CREATE TABLE unfollows(
+     follower_id INT NOT NULL,
+     followee_id INT NOT NULL
+);
+
+
+DELIMITER $$
+
+CREATE TRIGGER log_unfollow
+     AFTER DELETE ON follows FOR EACH ROW
+     BEGIN
+          INSERT INTO unfollows
+          SET
+          follower_id = OLD.follower_id,
+          followee_id = OLD.followee_id;
+     END;
+$$
+
+DELIMITER ;
+
+ - - - - - - - - - - 
